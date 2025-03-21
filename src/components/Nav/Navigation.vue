@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="bg-gray-800 fixed w-[90%] top-0 z-10 mx-[5%] px-5 rounded-md transition-all"
+    class="bg-gray-800 fixed w-[90%] top-0 z-10 mx-[5%] rounded-md transition-all"
   >
     <div class="container mx-auto flex justify-between items-center p-2">
       <!-- Logo -->
@@ -13,22 +13,30 @@
           alt="Logo"
           class="w-15 h-auto box-content self-center"
         />
-        <span class="text-gray-200 ml-1">整合式教學平台</span>
+        <span class="text-gray-200 ml-1 text-[24px]">整合式教學平台</span>
       </router-link>
       <!-- Menu -->
-      <div class="hidden md:flex space-x-5">
+      <div class="hidden md:flex space-x-2">
         <router-link
           to="/Class"
-          class="text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2"
+          class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >我要開課</router-link
         >
         <router-link
-          class="text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2"
+          class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >我要選課</router-link
         >
         <router-link
-          class="text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2"
+          class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
+          >我的課程</router-link
+        >
+        <router-link
+          class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >雲端開發平台</router-link
+        >
+        <router-link
+          class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
+          >登入</router-link
         >
       </div>
       <!-- Mobile Menu Button -->
