@@ -1,7 +1,8 @@
 <template>
   <div class="Home">
     <HeroSection />
-    <FeaturesCardList id="features">
+    <div id="features"></div>
+    <FeaturesCardList>
       <FeaturesCard
         ><template v-slot:icon>📚</template
         ><template v-slot:title>豐富的課程資源</template
@@ -31,7 +32,13 @@
         ></FeaturesCard
       >
     </FeaturesCardList>
-    <div class="h-screen"></div>
+    <div id="hotcourse"></div>
+    <HotCourseLayout>
+      <HotCourse />
+      <HotCourse />
+      <HotCourse />
+      <HotCourse />
+    </HotCourseLayout>
   </div>
 </template>
 
@@ -39,6 +46,8 @@
 import HeroSection from "../components/HeroSection.vue";
 import FeaturesCardList from "../components/Feature/FeaturesCardList.vue";
 import FeaturesCard from "../components/Feature/FeaturesCard.vue";
+import HotCourseLayout from "../components/HotCourse/HotCourseLayout.vue";
+import HotCourse from "../components/HotCourse/HotCourse.vue";
 </script>
 
 <style scoped>
