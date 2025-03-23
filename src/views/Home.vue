@@ -32,7 +32,7 @@
         ></FeaturesCard
       >
     </FeaturesCardList>
-    <div id="hotcourse"></div>
+    <div id="hotcourse" class="mt-[120px]"></div>
     <HotCourseLayout>
       <HotCourse />
       <HotCourse />
