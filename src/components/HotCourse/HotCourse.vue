@@ -6,7 +6,7 @@
       <img alt="課程圖片" />
     </div>
     <div class="p-[15px]">
-      <p class="text-[20px]">課程名稱</p>
+      <p class="text-[20px] font-bold">課程名稱</p>
       <div class="flex justify-between text-[#666] text-[16px] mt-2 mb-4">
         <span>講師: </span>
         <span>5.0 ⭐</span>
