@@ -18,11 +18,12 @@
       <!-- Menu -->
       <div class="hidden md:flex space-x-2">
         <router-link
-          to="/Class"
+          to="/CreateCourse"
           class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >我要開課</router-link
         >
         <router-link
+          to="/SelectCourse"
           class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >我要選課</router-link
         >

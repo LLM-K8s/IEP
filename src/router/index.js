@@ -1,13 +1,15 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 import Home from "../views/Home.vue";
-import Class from "../views/Class.vue";
+import SelectCourse from "../views/SelectCourse.vue";
+import CreateCourse from "../views/CreateCourse.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/", name: "Home", component: Home },
-    { path: "/Class", name: "Class", component: Class },
+    { path: "/CreateCourse", name: "CreateCourse", component: CreateCourse },
+    { path: "/SelectCourse", name: "SelectCourse", component: SelectCourse },
   ],
 });
 
