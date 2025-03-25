@@ -28,6 +28,7 @@
           >我要選課</router-link
         >
         <router-link
+          to="/MyCourse"
           class="text-gray-300 text-[16px] hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >我的課程</router-link
         >
@@ -68,16 +69,32 @@
       <div v-if="isMenuOpen" class="md:hidden space-y-3 mb-3">
         <hr class="border-2 border-gray-500 rounded-full" />
         <router-link
+          to="/CreateCourse"
+          @click="toggleMenu"
           class="block text-gray-300 text-center hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >我要開課</router-link
         >
         <router-link
+          to="/SelectCourse"
+          @click="toggleMenu"
           class="block text-gray-300 text-center hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >我要選課</router-link
         >
         <router-link
+          to="/MyCourse"
+          @click="toggleMenu"
+          class="block text-gray-300 text-center hover:text-white hover:bg-gray-600 rounded-lg p-2"
+          >我的課程</router-link
+        >
+        <router-link
+          @click="toggleMenu"
           class="block text-gray-300 text-center hover:text-white hover:bg-gray-600 rounded-lg p-2"
           >雲端開發平台</router-link
+        >
+        <router-link
+          @click="toggleMenu"
+          class="block text-gray-300 text-center hover:text-white hover:bg-gray-600 rounded-lg p-2"
+          >登入</router-link
         >
       </div>
     </transition>
