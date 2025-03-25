@@ -20,10 +20,10 @@
               <span>上次進入: </span>
             </div>
             <p class="text-[#666] text-[16px] mt-2 mb-4">課程簡介</p>
-            <a
-              href="#"
+            <router-link
+              to="/Class"
               class="bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2"
-              >進入課程</a
+              >進入課程</router-link
             >
           </div>
         </div>
