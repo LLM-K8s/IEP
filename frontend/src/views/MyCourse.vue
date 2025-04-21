@@ -1,5 +1,6 @@
 <template>
   <div class="MyCourse">
+    <NavBar />
     <div class="flex flex-col h-screen mx-[64px] pb-[64px]">
       <p class="text-[24px] mt-20 mb-[16px] font-bold w-[100%] h-fit">
         我的課程
@@ -31,6 +32,11 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import NavBar from "../components/NavBar/NavBar.vue";
+</script>
+
 <style scoped>
 .MyCourse {
   background-image: url("../assets/images/email-pattern.png");
