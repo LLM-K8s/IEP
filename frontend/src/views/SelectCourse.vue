@@ -1,22 +1,23 @@
 <template>
   <div class="SelectCourse">
     <NavBar />
-    <div class="flex flex-col h-screen mx-[64px] pb-[64px]">
-      <p class="text-[24px] mt-20 mb-[16px] font-bold w-[100%] h-fit">
-        課程列表
-      </p>
-      <div
-        class="bg-white shadow-gray-500 rounded-[8px] w-[100%] self-center p-5"
-      >
+    <div class="w-[90%] mx-[5%]">
+      <div class="pt-20 w-[100%]">
+        <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
+          課程列表
+        </span>
+        <hr class="border-2 border-gray-500 rounded-2xl" />
+      </div>
+      <div class="shadow-gray-500 rounded-[8px] w-[100%] self-center p-5">
         <input
           id="search-course-name"
           type="text"
-          class="text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
+          class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
           placeholder="搜尋課程..."
         />
         <select
           id="course-type"
-          class="text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2"
+          class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2"
         >
           <option>所有類型</option>
           <option>程式設計</option>
@@ -59,5 +60,6 @@ import NavBar from "../components/NavBar/NavBar.vue";
 <style scoped>
 .SelectCourse {
   background-image: url("../assets/images/email-pattern.png");
+  height: 100vh;
 }
 </style>

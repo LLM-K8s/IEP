@@ -1,12 +1,15 @@
 <template>
   <div class="MyCourse">
     <NavBar />
-    <div class="flex flex-col h-screen mx-[64px] pb-[64px]">
-      <p class="text-[24px] mt-20 mb-[16px] font-bold w-[100%] h-fit">
-        我的課程
-      </p>
+    <div class="w-[90%] mx-[5%]">
+      <div class="pt-20 w-[100%]">
+        <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
+          我的課程
+        </span>
+        <hr class="border-2 border-gray-500 rounded-2xl" />
+      </div>
       <div
-        class="bg-white grid gap-1 grid-cols-3 shadow-gray-500 rounded-[8px] w-[100%] self-center p-5"
+        class="grid gap-1 grid-cols-3 shadow-gray-500 rounded-[8px] w-[100%] self-center p-5"
       >
         <div
           class="border-1 border-[#ddd] border-solid rounded-[8px] shadow-md shadow-gray-500 overflow-hidden"
@@ -40,5 +43,6 @@ import NavBar from "../components/NavBar/NavBar.vue";
 <style scoped>
 .MyCourse {
   background-image: url("../assets/images/email-pattern.png");
+  height: 100vh;
 }
 </style>
