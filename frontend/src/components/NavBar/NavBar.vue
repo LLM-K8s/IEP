@@ -1,6 +1,10 @@
 <template>
-  <nav class="bg-gray-800 fixed w-full md:w-[90%] top-0 z-10 md:mx-[5%] md:rounded-md transition-all">
-    <div class="container mx-auto px-4 md:px-[64px] flex justify-between items-center p-2">
+  <nav
+    class="bg-gray-800 fixed w-full md:w-[90%] top-0 z-10 md:mx-[5%] md:rounded-md transition-all"
+  >
+    <div
+      class="container mx-auto px-4 md:px-[64px] flex justify-between items-center p-2"
+    >
       <!-- Logo -->
       <Logo />
 
@@ -24,10 +28,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import Logo from './Logo.vue';
-import MenuLinks from './MenuLinks.vue';
-import MobileToggleBtn from './MobileToggleBtn.vue';
+import { ref } from "vue";
+import Logo from "./Logo.vue";
+import MenuLinks from "./MenuLinks.vue";
+import MobileToggleBtn from "./MobileToggleBtn.vue";
 
 const isMenuOpen = ref(false);
 const toggleMenu = () => (isMenuOpen.value = !isMenuOpen.value);

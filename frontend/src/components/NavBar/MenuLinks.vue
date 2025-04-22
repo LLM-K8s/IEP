@@ -3,14 +3,14 @@ const props = defineProps({
   isMobile: Boolean,
 });
 
-const emit = defineEmits(['itemClick']);
+const emit = defineEmits(["itemClick"]);
 
 const links = [
-  { name: '我要開課', to: '/CreateCourse' },
-  { name: '我要選課', to: '/SelectCourse' },
-  { name: '我的課程', to: '/MyCourse' },
-  { name: '雲端開發平台' },
-  { name: '登入' },
+  { name: "我要開課", to: "/CreateCourse" },
+  { name: "我要選課", to: "/SelectCourse" },
+  { name: "我的課程", to: "/MyCourse" },
+  { name: "雲端開發平台" },
+  { name: "登入" },
 ];
 </script>
 
@@ -22,7 +22,7 @@ const links = [
       :to="link.to || '#'"
       :class="[
         'text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2',
-        isMobile ? 'block text-center' : 'text-[16px]'
+        isMobile ? 'block text-center' : 'text-[16px]',
       ]"
       @click="isMobile ? emit('itemClick') : null"
     >

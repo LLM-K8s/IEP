@@ -6,10 +6,10 @@
       <dev class="text-[40px] mb-4">
         <slot name="icon"></slot>
       </dev>
-      <p class="text-[20px] font-bold mb-2.5">
+      <p class="text-gray-800 text-[20px] font-bold mb-2.5">
         <slot name="title"></slot>
       </p>
-      <p class="text-[16px]">
+      <p class="text-gray-800 text-[16px]">
         <slot name="text"></slot>
       </p>
     </slot>

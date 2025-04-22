@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div class="bg-white shadow-gray-500 rounded-[8px] mx-[64px]">
-      <p class="text-[24px] p-4 font-bold">熱門課程</p>
-      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-4">
-        <slot></slot>
-      </div>
+    <p class="text-gray-800 text-[24px] text-center mt-[120px] font-bold">
+      熱門課程
+    </p>
+    <hr class="my-4 border-2 border-gray-500 rounded-2xl" />
+    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-[16px]">
+      <slot></slot>
     </div>
   </div>
 </template>
