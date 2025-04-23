@@ -1,7 +1,7 @@
 <template>
   <div class="Class">
     <NavBar />
-    <div class="w-[90%] mx-[5%]">
+    <div class="w-[90%] mx-[5%] pb-4">
       <div class="pt-20 w-[100%]">
         <router-link
           to="/MyCourse"
@@ -11,10 +11,10 @@
         <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
           課程內容
         </span>
-        <hr class="border-2 border-gray-500 rounded-2xl mb-4" />
+        <hr class="border-2 border-gray-500 rounded-2xl mb-6" />
       </div>
       <div
-        v-for="week in assignments"
+        v-for="(week, index) in assignments"
         :key="week.dateRange"
         class="mb-8 bg-white rounded-2xl shadow p-4"
       >
@@ -35,12 +35,31 @@
             </span>
           </li>
         </ul>
+        <!--展開按鈕-->
+        <button
+          @click="toggleSubmission(index)"
+          class="mt-4 text-sm bg-[#3498db] text-white w-[100%] px-3 py-1 rounded hover:bg-[#2d83bc] transition"
+        >
+          {{ showSubmission[index] ? "收合作業繳交區 🔼" : "作業繳交區 🔽" }}
+        </button>
+        <!-- 繳交區塊 -->
+        <div
+          v-if="showSubmission[index]"
+          class="mt-4 p-4 bg-gray-100 rounded-xl border border-purple-200"
+        >
+          <p class="mb-2 text-gray-700">請上傳你的作業：</p>
+          <input
+            type="file"
+            class="block w-full text-sm text-gray-600 file:mr-4 file:py-1 file:px-4 file:border-0 file:bg-[#3498db] file:text-white file:rounded-md hover:file:bg-[#2d83bc]"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import NavBar from "../components/NavBar/NavBar.vue";
 const assignments = [
   {
@@ -68,6 +87,13 @@ const assignments = [
   },
 ];
 
+// 狀態：每週是否顯示作業繳交區塊
+const showSubmission = ref(assignments.map(() => false));
+
+const toggleSubmission = (index) => {
+  showSubmission.value[index] = !showSubmission.value[index];
+};
+
 const getIcon = (type) => {
   switch (type) {
     case "ppt":
@@ -85,6 +111,6 @@ const getIcon = (type) => {
 <style scoped>
 .Class {
   background-image: url("../assets/images/email-pattern.png");
-  height: 100vh;
+  min-height: 100vh;
 }
 </style>
