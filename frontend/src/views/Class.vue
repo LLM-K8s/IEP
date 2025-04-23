@@ -11,6 +11,10 @@
         <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
           課程內容
         </span>
+        <!-- <router-link
+          class="bg-[#3498db] hover:bg-[#2d83bc] text-white text-[20px] px-6 rounded-lg h-fit float-right"
+          >新增課程內容</router-link
+        > -->
         <hr class="border-2 border-gray-500 rounded-2xl mb-6" />
       </div>
       <div
@@ -33,8 +37,49 @@
             <span class="text-blue-700 hover:underline cursor-pointer">
               {{ item.name }}
             </span>
+            <button class="text-sm text-red-500 hover:underline ml-auto">
+              刪除
+            </button>
           </li>
         </ul>
+        <!--新增檔案內容-->
+        <button
+          @click="toggleEditor(index)"
+          class="mt-4 text-sm bg-green-500 text-white w-full px-3 py-1 rounded hover:bg-green-600 transition"
+        >
+          {{ showEditor[index] ? "收合新增內容區 ✏️" : "新增課程內容 ➕" }}
+        </button>
+        <div
+          v-if="showEditor[index]"
+          class="mt-4 p-4 bg-gray-50 border border-green-300 rounded-xl"
+        >
+          <div class="mb-2">
+            <label class="block text-gray-600 mb-1">檔案名稱：</label>
+            <input
+              v-model="newContent[index].name"
+              type="text"
+              class="w-full border rounded px-2 py-1"
+              placeholder="例如：PPT文件6"
+            />
+          </div>
+          <div class="mb-2">
+            <label class="block text-gray-600 mb-1">類型：</label>
+            <select
+              v-model="newContent[index].type"
+              class="w-full border rounded px-2 py-1"
+            >
+              <option value="ppt">PPT</option>
+              <option value="excel">Excel</option>
+              <option value="doc">Word</option>
+            </select>
+          </div>
+          <button
+            @click="addContent(index)"
+            class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
+          >
+            儲存內容
+          </button>
+        </div>
         <!--展開按鈕-->
         <button
           @click="toggleSubmission(index)"
@@ -92,6 +137,30 @@ const showSubmission = ref(assignments.map(() => false));
 
 const toggleSubmission = (index) => {
   showSubmission.value[index] = !showSubmission.value[index];
+};
+
+const showEditor = ref(assignments.map(() => false));
+const newContent = ref(assignments.map(() => ({ name: "", type: "ppt" })));
+
+const toggleEditor = (index) => {
+  showEditor.value[index] = !showEditor.value[index];
+};
+
+const addContent = (index) => {
+  const content = newContent.value[index];
+  if (!content.name || !content.type) {
+    alert("請完整填寫內容！");
+    return;
+  }
+
+  assignments[index].items.push({
+    name: content.name,
+    type: content.type,
+  });
+
+  // 清空 input
+  newContent.value[index] = { name: "", type: "ppt" };
+  showEditor.value[index] = false;
 };
 
 const getIcon = (type) => {
