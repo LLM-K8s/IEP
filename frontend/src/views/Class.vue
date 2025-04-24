@@ -11,23 +11,49 @@
         <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
           課程內容
         </span>
-        <router-link
-          class="bg-[#3498db] hover:bg-[#2d83bc] text-white text-[20px] px-6 rounded-lg h-fit float-right"
-        >
-          新增課程內容
-        </router-link>
         <hr class="border-2 border-gray-500 rounded-2xl mb-6" />
       </div>
-
+      <button
+        @click="toggleNewChapter"
+        :class="[
+          'bg-[#3498db] hover:bg-[#2d83bc] text-white text-[20px] px-6 rounded-lg',
+          showNewChapter ? 'mb-0' : 'mb-5',
+        ]"
+      >
+        {{ showNewChapter ? "新增課程章節 🔼" : "新增課程章節 🔽" }}
+      </button>
+      <div v-if="showNewChapter" class="mb-8 bg-white rounded-2xl shadow p-4">
+        <div class="mb-2">
+          <label class="block text-gray-600 mb-1">章節名稱：</label>
+          <input
+            v-model="newChapter"
+            type="text"
+            class="w-full border rounded px-2 py-1"
+            placeholder="輸入章節名稱"
+          />
+        </div>
+        <button
+          @click="addNewChapter"
+          class="mt-2 bg-[#3498db] hover:bg-[#2d83bc] text-white w-[100%] px-4 py-1 rounded-md"
+        >
+          新增章節
+        </button>
+      </div>
       <div
         v-for="(week, index) in assignments"
-        :key="week.dateRange"
+        :key="week.chapter"
         class="mb-8 bg-white rounded-2xl shadow p-4"
       >
         <h2
           class="text-xl font-bold text-purple-800 border-b-4 border-gray-200 pb-2 mb-4"
         >
-          {{ week.dateRange }}
+          {{ week.chapter }}
+          <button
+            @click="removeChapter(index)"
+            class="text-sm text-red-500 hover:underline ml-4"
+          >
+            刪除章節 🗑️
+          </button>
         </h2>
         <ul>
           <li
@@ -43,21 +69,21 @@
               @click="removeItem(index, itemIndex)"
               class="text-sm text-red-500 hover:underline ml-auto"
             >
-              刪除
+              刪除🗑️
             </button>
           </li>
         </ul>
 
         <!--新增檔案內容-->
         <button
-          @click="toggleEditor(index)"
+          @click="toggleFileEditor(index)"
           class="mt-4 text-sm bg-green-500 text-white w-full px-3 py-1 rounded hover:bg-green-600 transition"
         >
-          {{ showEditor[index] ? "收合新增內容區 ➖" : "新增課程內容 ➕" }}
+          {{ showFileEditor[index] ? "新增課程內容 ➖" : "新增課程內容 ➕" }}
         </button>
         <div
-          v-if="showEditor[index]"
-          class="mt-4 p-4 bg-gray-50 border border-green-300 rounded-xl"
+          v-if="showFileEditor[index]"
+          class="mt-4 p-4 bg-gray-100 border border-green-300 rounded-xl"
         >
           <div class="mb-2">
             <label class="block text-gray-600 mb-1">檔案名稱：</label>
@@ -77,11 +103,12 @@
               <option value="ppt">PPT</option>
               <option value="excel">Excel</option>
               <option value="doc">Word</option>
+              <option value="vedio">Vedio</option>
             </select>
           </div>
           <button
             @click="addContent(index)"
-            class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
+            class="mt-2 bg-[#3498db] hover:bg-[#2d83bc] text-white px-4 py-1 rounded"
           >
             儲存內容
           </button>
@@ -89,16 +116,16 @@
 
         <!--展開按鈕-->
         <button
-          @click="toggleSubmission(index)"
+          @click="toggleFileSubmission(index)"
           class="mt-4 text-sm bg-[#3498db] text-white w-[100%] px-3 py-1 rounded hover:bg-[#2d83bc] transition"
         >
-          {{ showSubmission[index] ? "收合作業繳交區 🔼" : "作業繳交區 🔽" }}
+          {{ showFileSubmission[index] ? "作業繳交區 🔼" : "作業繳交區 🔽" }}
         </button>
 
-        <!-- 繳交區塊 -->
+        <!-- 繳交檔案區塊 -->
         <div
-          v-if="showSubmission[index]"
-          class="mt-4 p-4 bg-gray-100 rounded-xl border border-purple-200"
+          v-if="showFileSubmission[index]"
+          class="mt-4 p-4 bg-gray-100 rounded-xl border border-blue-300"
         >
           <p class="mb-2 text-gray-700">請上傳你的作業：</p>
           <input
@@ -111,6 +138,12 @@
             上傳作業
           </button>
         </div>
+        <button
+          @click="toggleReviewPanel(index)"
+          class="mt-4 text-sm bg-[#3498db] text-white w-[100%] px-3 py-1 rounded hover:bg-[#2d83bc] transition"
+        >
+          查看檔案與評分
+        </button>
       </div>
     </div>
   </div>
@@ -123,14 +156,14 @@ import NavBar from "../components/NavBar/NavBar.vue";
 // 課程資料
 const assignments = ref([
   {
-    dateRange: "02月24日 - 03月2日",
+    chapter: "02月24日 - 03月2日",
     items: [
       { name: "PPT文件1", type: "ppt" },
       { name: "PPT文件2", type: "ppt" },
     ],
   },
   {
-    dateRange: "03月3日 - 03月9日",
+    chapter: "03月3日 - 03月9日",
     items: [
       { name: "PPT文件3", type: "ppt" },
       { name: "PPT文件4", type: "ppt" },
@@ -139,7 +172,7 @@ const assignments = ref([
     ],
   },
   {
-    dateRange: "03月10日 - 03月16日",
+    chapter: "03月10日 - 03月16日",
     items: [
       { name: "Word2", type: "doc" },
       { name: "PPT文件5", type: "ppt" },
@@ -148,19 +181,25 @@ const assignments = ref([
 ]);
 
 // 展開狀態
-const showSubmission = ref(assignments.value.map(() => false));
-const showEditor = ref(assignments.value.map(() => false));
+const showFileSubmission = ref(assignments.value.map(() => false));
+const showFileEditor = ref(assignments.value.map(() => false));
+const showNewChapter = ref(false);
 const newContent = ref(
   assignments.value.map(() => ({ name: "", type: "ppt" }))
 );
+const newChapter = ref("");
 
 // 展開控制
-const toggleSubmission = (index) => {
-  showSubmission.value[index] = !showSubmission.value[index];
+const toggleFileSubmission = (index) => {
+  showFileSubmission.value[index] = !showFileSubmission.value[index];
 };
 
-const toggleEditor = (index) => {
-  showEditor.value[index] = !showEditor.value[index];
+const toggleFileEditor = (index) => {
+  showFileEditor.value[index] = !showFileEditor.value[index];
+};
+
+const toggleNewChapter = () => {
+  showNewChapter.value = !showNewChapter.value;
 };
 
 // 新增內容
@@ -172,12 +211,37 @@ const addContent = (index) => {
   }
   assignments.value[index].items.push({ ...content });
   newContent.value[index] = { name: "", type: "ppt" };
-  showEditor.value[index] = false;
+  showFileEditor.value[index] = false;
 };
 
-// 刪除功能
+// 刪除檔案
 const removeItem = (weekIndex, itemIndex) => {
   assignments.value[weekIndex].items.splice(itemIndex, 1);
+};
+
+//刪除週次
+const removeChapter = (index) => {
+  if (confirm("確定要刪除這章節的所有課程內容嗎？")) {
+    assignments.value.splice(index, 1);
+    showFileSubmission.value.splice(index, 1);
+    showFileEditor.value.splice(index, 1);
+    newContent.value.splice(index, 1);
+  }
+};
+
+const addNewChapter = () => {
+  if (!newChapter.value) {
+    alert("章節名稱不能為空！");
+    return;
+  }
+  assignments.value.push({
+    chapter: newChapter.value, // Add the new chapter name here
+    items: [], // No items initially
+  });
+  showFileSubmission.value.push(false);
+  showFileEditor.value.push(false);
+  newContent.value.push({ name: "", type: "ppt" }); // icon 顯示
+  newChapter.value = ""; // Clear the input
 };
 
 // icon 顯示
@@ -189,6 +253,8 @@ const getIcon = (type) => {
       return "📈";
     case "doc":
       return "📄";
+    case "vedio":
+      return "🎦";
     default:
       return "📁";
   }
