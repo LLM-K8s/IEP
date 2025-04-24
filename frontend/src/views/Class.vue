@@ -11,12 +11,14 @@
         <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
           課程內容
         </span>
-        <!-- <router-link
+        <router-link
           class="bg-[#3498db] hover:bg-[#2d83bc] text-white text-[20px] px-6 rounded-lg h-fit float-right"
-          >新增課程內容</router-link
-        > -->
+        >
+          新增課程內容
+        </router-link>
         <hr class="border-2 border-gray-500 rounded-2xl mb-6" />
       </div>
+
       <div
         v-for="(week, index) in assignments"
         :key="week.dateRange"
@@ -29,7 +31,7 @@
         </h2>
         <ul>
           <li
-            v-for="item in week.items"
+            v-for="(item, itemIndex) in week.items"
             :key="item.name"
             class="flex items-center space-x-2 py-1"
           >
@@ -37,17 +39,21 @@
             <span class="text-blue-700 hover:underline cursor-pointer">
               {{ item.name }}
             </span>
-            <button class="text-sm text-red-500 hover:underline ml-auto">
+            <button
+              @click="removeItem(index, itemIndex)"
+              class="text-sm text-red-500 hover:underline ml-auto"
+            >
               刪除
             </button>
           </li>
         </ul>
+
         <!--新增檔案內容-->
         <button
           @click="toggleEditor(index)"
           class="mt-4 text-sm bg-green-500 text-white w-full px-3 py-1 rounded hover:bg-green-600 transition"
         >
-          {{ showEditor[index] ? "收合新增內容區 ✏️" : "新增課程內容 ➕" }}
+          {{ showEditor[index] ? "收合新增內容區 ➖" : "新增課程內容 ➕" }}
         </button>
         <div
           v-if="showEditor[index]"
@@ -59,7 +65,7 @@
               v-model="newContent[index].name"
               type="text"
               class="w-full border rounded px-2 py-1"
-              placeholder="例如：PPT文件6"
+              placeholder="教學報告"
             />
           </div>
           <div class="mb-2">
@@ -80,6 +86,7 @@
             儲存內容
           </button>
         </div>
+
         <!--展開按鈕-->
         <button
           @click="toggleSubmission(index)"
@@ -87,6 +94,7 @@
         >
           {{ showSubmission[index] ? "收合作業繳交區 🔼" : "作業繳交區 🔽" }}
         </button>
+
         <!-- 繳交區塊 -->
         <div
           v-if="showSubmission[index]"
@@ -97,6 +105,11 @@
             type="file"
             class="block w-full text-sm text-gray-600 file:mr-4 file:py-1 file:px-4 file:border-0 file:bg-[#3498db] file:text-white file:rounded-md hover:file:bg-[#2d83bc]"
           />
+          <button
+            class="mt-2 bg-[#3498db] hover:bg-[#2d83bc] text-white px-4 py-1 rounded-md"
+          >
+            上傳作業
+          </button>
         </div>
       </div>
     </div>
@@ -106,7 +119,9 @@
 <script setup>
 import { ref } from "vue";
 import NavBar from "../components/NavBar/NavBar.vue";
-const assignments = [
+
+// 課程資料
+const assignments = ref([
   {
     dateRange: "02月24日 - 03月2日",
     items: [
@@ -130,39 +145,42 @@ const assignments = [
       { name: "PPT文件5", type: "ppt" },
     ],
   },
-];
+]);
 
-// 狀態：每週是否顯示作業繳交區塊
-const showSubmission = ref(assignments.map(() => false));
+// 展開狀態
+const showSubmission = ref(assignments.value.map(() => false));
+const showEditor = ref(assignments.value.map(() => false));
+const newContent = ref(
+  assignments.value.map(() => ({ name: "", type: "ppt" }))
+);
 
+// 展開控制
 const toggleSubmission = (index) => {
   showSubmission.value[index] = !showSubmission.value[index];
 };
-
-const showEditor = ref(assignments.map(() => false));
-const newContent = ref(assignments.map(() => ({ name: "", type: "ppt" })));
 
 const toggleEditor = (index) => {
   showEditor.value[index] = !showEditor.value[index];
 };
 
+// 新增內容
 const addContent = (index) => {
   const content = newContent.value[index];
   if (!content.name || !content.type) {
     alert("請完整填寫內容！");
     return;
   }
-
-  assignments[index].items.push({
-    name: content.name,
-    type: content.type,
-  });
-
-  // 清空 input
+  assignments.value[index].items.push({ ...content });
   newContent.value[index] = { name: "", type: "ppt" };
   showEditor.value[index] = false;
 };
 
+// 刪除功能
+const removeItem = (weekIndex, itemIndex) => {
+  assignments.value[weekIndex].items.splice(itemIndex, 1);
+};
+
+// icon 顯示
 const getIcon = (type) => {
   switch (type) {
     case "ppt":
