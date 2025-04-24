@@ -8,9 +8,7 @@
         </span>
         <hr class="border-2 border-gray-500 rounded-2xl" />
       </div>
-      <div
-        class="grid gap-1 grid-cols-3 shadow-gray-500 rounded-[8px] w-[100%] self-center p-5"
-      >
+      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-5">
         <div
           class="border-1 border-[#ddd] border-solid rounded-[8px] shadow-md shadow-gray-500 overflow-hidden"
         >
