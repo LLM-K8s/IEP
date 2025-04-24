@@ -6,6 +6,7 @@ const props = defineProps({
 const emit = defineEmits(["itemClick"]);
 
 const links = [
+  { name: "成為老師", to: "/Teacher" },
   { name: "我要開課", to: "/CreateCourse" },
   { name: "我要選課", to: "/SelectCourse" },
   { name: "我的課程", to: "/MyCourse" },

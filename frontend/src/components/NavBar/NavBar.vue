@@ -3,7 +3,7 @@
     class="bg-gray-800 fixed w-full md:w-[90%] top-0 z-10 md:mx-[5%] md:rounded-md transition-all"
   >
     <div
-      class="container mx-auto px-4 md:px-[64px] flex justify-between items-center p-2"
+      class="container mx-auto px-4 md:px-[64px] flex justify-between items-center py-2"
     >
       <!-- Logo -->
       <Logo />
