@@ -1,54 +1,58 @@
 <script setup>
-import { computed } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'   // 路徑請依實際調整
+import { computed } from "vue";
+import { RouterLink } from "vue-router";
+import { useAuthStore } from "@/stores/auth"; // 路徑請依實際調整
 
-const props = defineProps({ isMobile: Boolean })
-const emit = defineEmits(['itemClick'])
+const props = defineProps({ isMobile: Boolean });
+const emit = defineEmits(["itemClick"]);
 
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 
 const baseLinks = [
-  { name: '成為老師',        to: '/Teacher' },
-  { name: '我要開課',        to: '/CreateCourse' },
-  { name: '我要選課',        to: '/SelectCourse' },
-  { name: '我的課程',        to: '/MyCourse' },
-  { name: '雲端開發平台',    to: 'https://coder.yang-lin.dev/api/v2/users/oidc/callback' },
-]
+  { name: "成為老師", to: "/Teacher" },
+  { name: "我要開課", to: "/CreateCourse" },
+  { name: "我要選課", to: "/SelectCourse" },
+  { name: "我的課程", to: "/MyCourse" },
+  {
+    name: "雲端開發平台",
+    to: "https://coder.yang-lin.dev/api/v2/users/oidc/callback",
+  },
+];
 
-const links = computed(() => [
-  ...baseLinks,
-  authStore.isAuthenticated
-    ? { name: '登出', action: authStore.logout }
-    : { name: '登入', action: authStore.login }
-])
+const links = computed(() => {
+  if (authStore.isAuthenticated) {
+    return [...baseLinks, { name: "登出", action: authStore.logout }];
+  } else {
+    return [{ name: "登入", action: authStore.login }];
+  }
+});
 
 function linkComponent(link) {
-  return link.to?.startsWith('http') ? 'a' : RouterLink
+  return link.to?.startsWith("http") ? "a" : RouterLink;
 }
 
 // 根據元件回傳對應 props
 function linkProps(link) {
-  if (link.to?.startsWith('http')) {
-    return { href: link.to, target: '_blank', rel: 'noopener noreferrer' }
+  if (link.to?.startsWith("http")) {
+    return { href: link.to, target: "_blank", rel: "noopener noreferrer" };
   } else {
-    return { to: link.to || '#' }
+    return { to: link.to || "#" };
   }
 }
 
 const linkClass = computed(() => [
-  'text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer',
-  props.isMobile ? 'block text-center' : 'text-[16px]'
-])
+  "text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
+  props.isMobile ? "block text-center" : "text-[16px]",
+]);
 const containerClass = computed(() =>
-  props.isMobile ? 'space-y-3' : 'flex space-x-2'
-)
+  props.isMobile ? "space-y-3" : "flex space-x-2"
+);
 
 function onLinkClick(link) {
   if (link.action) {
-    link.action()
+    link.action();
   } else if (props.isMobile) {
-    emit('itemClick')
+    emit("itemClick");
   }
 }
 </script>
