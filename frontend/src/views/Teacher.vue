@@ -70,7 +70,7 @@
             v-model="inputTagValue"
             @keydown.enter="addTag"
             @keydown.delete="handleBackspace"
-            class="flex-grow px-2 py-1 outline-none min-w-60"
+            class="flex-grow px-2 py-1 outline-none w-full"
             placeholder="輸入類型標籤後按 Enter 新增"
           />
         </div>

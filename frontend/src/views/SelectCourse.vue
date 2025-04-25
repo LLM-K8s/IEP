@@ -23,7 +23,9 @@
           <option>程式設計</option>
         </select>
       </div>
-      <div class="grid gap-1 grid-cols-3 mx-4 mt-[24px]">
+      <div
+        class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-[16px]"
+      >
         <div
           class="border-1 border-[#ddd] border-solid rounded-[8px] shadow-md shadow-gray-500 overflow-hidden"
         >
@@ -41,25 +43,48 @@
               <span>NT$</span>
               <span>課程時數</span>
             </div>
-            <a
-              href="#"
+            <button
+              @click="showDetails = true"
               class="bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2"
-              >查看詳情</a
             >
+              查看詳情
+            </button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- 浮動介面 -->
+    <div
+      v-if="showDetails"
+      class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800/50"
+    >
+      <div class="bg-white p-8 rounded-lg w-[90%] shadow-lg md:w-[50%]">
+        <h2 class="text-[24px] font-bold mb-4">課程大綱</h2>
+        <div
+          class="overflow-y-auto max-h-[300px] text-[16px] text-[#666] border border-[#ddd] rounded-lg p-4"
+        >
+          <p>課程大綱內容</p>
+        </div>
+        <button
+          @click="showDetails = false"
+          class="mt-4 bg-[#e74c3c] hover:bg-[#c0392b] text-white rounded-lg p-2"
+        >
+          關閉
+        </button>
+        <button
+          class="mt-4 bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2 float-end"
+        >
+          選擇課程
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import NavBar from "../components/NavBar/NavBar.vue";
-</script>
 
-<style scoped>
-.SelectCourse {
-  background-image: url("../assets/images/email-pattern.png");
-  height: 100vh;
-}
-</style>
+const showDetails = ref(false);
+</script>
