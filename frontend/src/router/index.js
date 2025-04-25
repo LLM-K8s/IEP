@@ -29,7 +29,7 @@ router.beforeEach(async (to, _, next) => {
   await authStore.checkAuth();
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: '/' });
+    next({ name: 'Home' });
   } else {
     next();
   }
