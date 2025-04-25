@@ -88,3 +88,10 @@ import NavBar from "../components/NavBar/NavBar.vue";
 
 const showDetails = ref(false);
 </script>
+
+<style scoped>
+.SelectCourse {
+  background-image: url("../assets/images/email-pattern.png");
+  height: 100vh;
+}
+</style>
