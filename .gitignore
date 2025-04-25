@@ -15,8 +15,9 @@ dist-ssr
 # backend
 backend/.venv
 
-# test
+# frontend test
 test
+/frontend/src/stores/test.js
 
 # Editor directories and files
 .vscode/*
