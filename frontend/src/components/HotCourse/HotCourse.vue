@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-1 border-[#ddd] border-solid rounded-[8px] shadow-md shadow-gray-500 overflow-hidden mt-[30px]"
+    class="border-1 border-[#ddd] border-solid bg-white rounded-[8px] shadow-md shadow-gray-500 overflow-hidden mt-[30px]"
   >
     <div class="h-[150px] bg-[#eee]">
       <img alt="課程圖片" />
