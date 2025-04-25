@@ -1,18 +1,8 @@
 <script setup>
-import { useKeycloak } from "../../plugins/keycloak";
-import { useRouter } from "vue-router";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { useAuthStore } from "../../stores/auth";
 
-const router = useRouter();
-const { isAuthenticated, username, keycloak } = useKeycloak();
-
-function login() {
-  keycloak.login();
-}
-
-function logout() {
-  keycloak.logout();
-}
+const authStore = useAuthStore()
 
 const props = defineProps({
   isMobile: Boolean,
@@ -26,22 +16,16 @@ const links = computed(() => {
     { name: "我要開課", to: "/CreateCourse" },
     { name: "我要選課", to: "/SelectCourse" },
     { name: "我的課程", to: "/MyCourse" },
-    { name: "雲端開發平台" },
+    { name: "雲端開發平台", to: "https://coder.yang-lin.dev/api/v2/users/oidc/callback" },
   ];
-
-  if (isAuthenticated.value) {
-    return [
-      ...baseLinks,
-      { name: username.value, to: "/profile" },
-      { name: "登出", action: logout }
-    ];
-  } else {
-    return [
-      ...baseLinks,
-      { name: "登入", action: login }
-    ];
+  return [
+    ...baseLinks,
+    authStore.isAuthenticated
+      ? { name: "登出", action: authStore.logout }
+      : { name: "登入", action: authStore.login }
+  ];
   }
-});
+);
 </script>
 
 <template>
