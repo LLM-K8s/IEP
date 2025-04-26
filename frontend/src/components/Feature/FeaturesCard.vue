@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-center mt-[30px] bg-white shadow-md shadow-gray-500 rounded-[8px] w-[320px] self-center p-5"
+    class="text-center mt-[30px] bg-white shadow-md shadow-gray-500 rounded-[8px] w-[80%] h-[90%] self-center p-5"
   >
     <slot>
       <dev class="text-[40px] mb-4">

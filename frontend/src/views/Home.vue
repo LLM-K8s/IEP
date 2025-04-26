@@ -5,34 +5,45 @@
     <div class="w-[90%] mx-[5%]">
       <section id="features" class="features-section px-[64px]">
         <FeaturesCardList>
-          <FeaturesCard
-            ><template v-slot:icon>📚</template
-            ><template v-slot:title>豐富的課程資源</template
-            ><template v-slot:text
-              >涵蓋各種領域的優質課程，從程式設計到語言學習，應有盡有。</template
-            ></FeaturesCard
-          >
-          <FeaturesCard
-            ><template v-slot:icon>🔄</template
-            ><template v-slot:title>靈活的學習方式</template
-            ><template v-slot:text
-              >線上學習，自由掌握進度，隨時隨地都能學習。</template
-            ></FeaturesCard
-          >
-          <FeaturesCard
-            ><template v-slot:icon>👨‍👩‍👧‍👦</template
-            ><template v-slot:title>互動式學習社群</template
-            ><template v-slot:text
-              >與來自世界各地的學習者交流，共同進步。</template
-            ></FeaturesCard
-          >
-          <FeaturesCard
-            ><template v-slot:icon>👨‍👩‍👧‍👦</template
-            ><template v-slot:title>互動式學習社群</template
-            ><template v-slot:text
-              >與來自世界各地的學習者交流，共同進步。</template
-            ></FeaturesCard
-          >
+          <template v-slot:featureCol1>
+            <FeaturesCard
+              ><template v-slot:icon>📚</template
+              ><template v-slot:title>豐富的課程資源</template
+              ><template v-slot:text
+                >涵蓋各種領域的優質課程，從程式設計到語言學習，應有盡有</template
+              ></FeaturesCard
+            >
+            <FeaturesCard
+              ><template v-slot:icon>📈</template
+              ><template v-slot:title>提升學習效率</template
+              ><template v-slot:text
+                >學生可以更專注於學習和實作，減少因環境問題等造成不必要的困擾</template
+              ></FeaturesCard
+            >
+            <FeaturesCard
+              ><template v-slot:icon>🌐</template
+              ><template v-slot:title>雲端開發</template
+              ><template v-slot:text
+                >可以透過網路在線上進行開發，並且手機、平板、電腦都可以使用</template
+              ></FeaturesCard
+            >
+          </template>
+          <template v-slot:featureCol2>
+            <FeaturesCard
+              ><template v-slot:icon>🏗️</template
+              ><template v-slot:title>客製化開發環境</template
+              ><template v-slot:text
+                >減少學生在設定環境配置上的困難，讓他們能夠更快地進入學習狀態</template
+              ></FeaturesCard
+            >
+            <FeaturesCard
+              ><template v-slot:icon>🎯</template
+              ><template v-slot:title>靈活學習</template
+              ><template v-slot:text
+                >可以在任何時間、任何地點通過網路連線至平台進行學習和實作</template
+              ></FeaturesCard
+            >
+          </template>
         </FeaturesCardList>
       </section>
 

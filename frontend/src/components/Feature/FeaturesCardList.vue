@@ -7,7 +7,12 @@
     <div
       class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-[16px] place-items-center place-content-center"
     >
-      <slot></slot>
+      <slot name="featureCol1"></slot>
+    </div>
+    <div
+      class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 lg:gap-x-0 mx-[16px] place-items-center place-content-cente"
+    >
+      <slot name="featureCol2"></slot>
     </div>
   </div>
 </template>
