@@ -22,6 +22,11 @@
           <option>所有類型</option>
           <option>程式設計</option>
         </select>
+        <button
+          class="bg-[#3498db] text-white w-[100%] rounded-lg p-2 mt-[16px] hover:bg-[#2d83bc]"
+        >
+          搜尋
+        </button>
       </div>
       <div
         class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-[16px]"

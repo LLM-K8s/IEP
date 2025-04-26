@@ -152,6 +152,7 @@
 <script setup>
 import { ref } from "vue";
 import NavBar from "../components/NavBar/NavBar.vue";
+import swal from "sweetalert";
 
 // 課程資料
 const assignments = ref([
@@ -206,7 +207,7 @@ const toggleNewChapter = () => {
 const addContent = (index) => {
   const content = newContent.value[index];
   if (!content.name || !content.type) {
-    alert("請完整填寫內容！");
+    swal("請完整填寫內容！", "", "warning");
     return;
   }
   assignments.value[index].items.push({ ...content });
@@ -219,19 +220,31 @@ const removeItem = (weekIndex, itemIndex) => {
   assignments.value[weekIndex].items.splice(itemIndex, 1);
 };
 
-//刪除週次
+//刪除章節
 const removeChapter = (index) => {
-  if (confirm("確定要刪除這章節的所有課程內容嗎？")) {
-    assignments.value.splice(index, 1);
-    showFileSubmission.value.splice(index, 1);
-    showFileEditor.value.splice(index, 1);
-    newContent.value.splice(index, 1);
-  }
+  swal("確定要刪除這個章節嗎？", {
+    buttons: {
+      cancel: "取消",
+      confirm: {
+        text: "刪除",
+        value: "delete",
+      },
+    },
+  }).then((value) => {
+    switch (value) {
+      case "delete":
+        assignments.value.splice(index, 1);
+        showFileSubmission.value.splice(index, 1);
+        showFileEditor.value.splice(index, 1);
+        newContent.value.splice(index, 1);
+        break;
+    }
+  });
 };
 
 const addNewChapter = () => {
   if (!newChapter.value) {
-    alert("章節名稱不能為空！");
+    swal("章節名稱不能為空！", "", "warning");
     return;
   }
   assignments.value.push({

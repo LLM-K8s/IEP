@@ -89,6 +89,7 @@
 import NavBar from "../components/NavBar/NavBar.vue";
 import { useCourseStore } from "../stores/course";
 import { ref } from "vue";
+import swal from "sweetalert";
 
 const courseStore = useCourseStore();
 const fileInput = ref(null);
@@ -111,9 +112,12 @@ function onSubmit() {
     !courseStore.courseIntro ||
     !courseStore.courseOutline ||
     !courseStore.courseImage ||
-    !courseStore.coursePrice
+    courseStore.coursePrice === null
   ) {
-    alert("請填寫所有欄位，才能提交審核！");
+    swal("請填寫所有欄位，才能提交審核！", "", "warning");
+    return;
+  } else if (courseStore.coursePrice < 0) {
+    swal("課程價格不能為負數！", "", "warning");
     return;
   }
 
