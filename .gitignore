@@ -12,12 +12,19 @@ dist
 dist-ssr
 *.local
 
-# backend
-backend/.venv
+# backend Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
 
 # frontend test
 test
-/frontend/src/stores/test.js
 
 # Editor directories and files
 .vscode/*
