@@ -17,6 +17,14 @@ export const useAuthStore = defineStore('auth', () => {
     state.value = { user }
   }
 
+  // 監聽 token 刷新事件
+  const setupTokenRefreshListener = () => {
+    authService.userManager.events.addUserLoaded(async (user) => {
+      console.log('Token 已刷新，更新 store 狀態')
+      setAuthState(user)
+    })
+  }
+
   const login = async () => {
     try {
       await authService.login()
@@ -40,6 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
   const handleRedirect = async () => {
     try {
       await authService.handleRedirect()
+      setupTokenRefreshListener() // 設置 token 刷新監聽器
     } catch (error) {
       console.error('處理回調時發生錯誤:', error)
     }
@@ -67,6 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout,
     handleRedirect,
-    checkAuth
+    checkAuth,
+    setupTokenRefreshListener
   }
 })
