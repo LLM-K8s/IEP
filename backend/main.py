@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from interface.user_router import router as user_router
 from interface.auth_router import router as auth_router
+from interface.course_router import router as course_router
 from infrastructure.mongodb import init_mongodb
 from contextlib import asynccontextmanager
 import uvicorn
@@ -16,6 +17,7 @@ app = FastAPI(lifespan=lifespan)
 # 路由綁定
 app.include_router(user_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
+app.include_router(course_router, prefix="/api")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
