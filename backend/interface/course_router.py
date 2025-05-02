@@ -12,7 +12,12 @@ async def get_course_service() -> CourseService:
 
 @router.post("/courses/", response_model=Course)
 async def create_course(course: Course, service: CourseService = Depends(get_course_service)):
-    return await service.create_course(course)
+    try:
+        if course.course_content is None:
+            course.course_content = []  # 默認為空列表
+        return await service.create_course(course)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/courses/", response_model=List[Course])
 async def list_course(service: CourseService = Depends(get_course_service)):
@@ -29,5 +34,5 @@ async def get_course(course_id: str, service: CourseService = Depends(get_course
 async def delete_course(course_id: str, service: CourseService = Depends(get_course_service)):
     success = await service.delete_course(course_id)
     if not success:
-        raise HTTPException(status_code=404, detail="Course not found")
-    return {"message": "Course deleted successfully"}
+        raise HTTPException(status_code=404, detail=f"Course with ID {course_id} not found")
+    return {"message": f"Course with ID {course_id} deleted successfully"}

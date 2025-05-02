@@ -14,6 +14,7 @@ class Chapter(Model):
     chapter_name: str
     chapter_file: List[ChapterFile]  # 章節文件列表
 
+# 課程
 class Course(Model):
     course_id: Optional[ObjectId] = Field(primary_field=True, default_factory=ObjectId)  # 自動生成隨機 ID
     course_name: str
@@ -23,6 +24,6 @@ class Course(Model):
     course_image: str
     course_price: int
     course_content: List[Chapter]
-    create_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())  # 自動生成創建時間
-    last_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())  # 自動生成最後更新時間
+    create_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))  # UTC
+    last_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))
     teacher_id: Optional[ObjectId] = None
