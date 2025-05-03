@@ -28,11 +28,9 @@
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
         >
           <option disabled value="" selected>請選擇類型</option>
-          <option>程式設計</option>
-          <option>專案管理</option>
-          <option>數學 & 科學</option>
-          <option>設計</option>
-          <option>職場技能</option>
+          <option v-for="type in courseTypes" :key="type" :value="type">
+            {{ type }}
+          </option>
         </select>
         <label for="course-intro" class="text-[20px] font-bold mb-[10px]"
           >課程簡介</label
@@ -56,11 +54,11 @@
           rows="5"
         ></textarea>
         <label for="course-image" class="text-[20px] font-bold mb-[10px]"
-          >課程封面圖片</label
+          >課程封面圖片(可選)</label
         >
         <input
           ref="fileInput"
-          @change="onFileChange"
+          @change="uploadFile"
           id="course-image"
           type="file"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4 hover:bg-gray-300"
@@ -87,15 +85,16 @@
 </template>
 <script setup>
 import NavBar from "../components/NavBar/NavBar.vue";
-import { useCourseStore } from "../stores/course";
+import { courseTypes } from "../stores/courseType";
+import { createCourseStore } from "../stores/createCourse";
 import { ref } from "vue";
 import swal from "sweetalert";
 
-const courseStore = useCourseStore();
+const courseStore = createCourseStore();
 const fileInput = ref(null);
 
 // 處理檔案上傳事件
-function onFileChange(event) {
+function uploadFile(event) {
   const files = event.target.files;
   if (files && files.length > 0) {
     courseStore.courseImage = files[0]; // 取第一個檔案
@@ -111,7 +110,6 @@ function onSubmit() {
     !courseStore.courseType ||
     !courseStore.courseIntro ||
     !courseStore.courseOutline ||
-    !courseStore.courseImage ||
     courseStore.coursePrice === null
   ) {
     swal("請填寫所有欄位，才能提交審核！", "", "warning");
@@ -120,11 +118,7 @@ function onSubmit() {
     swal("課程價格不能為負數！", "", "warning");
     return;
   }
-
   courseStore.submitCourse();
-  if (fileInput.value) {
-    fileInput.value.value = ""; // 清空檔案輸入
-  }
 }
 </script>
 <style scoped>

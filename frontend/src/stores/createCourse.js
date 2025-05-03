@@ -3,7 +3,7 @@ import { ref } from "vue";
 import axios from "axios";
 import swal from "sweetalert";
 
-export const useCourseStore = defineStore("course", () => {
+export const createCourseStore = defineStore("course", () => {
   const courseName = ref("");
   const courseType = ref("");
   const courseIntro = ref("");
