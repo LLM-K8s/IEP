@@ -1,10 +1,21 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
+from pydantic import BaseModel
 from domain.course import Course
 from application.course_service import CourseService
 from infrastructure.mongodb import get_engine
 
 router = APIRouter()
+
+class CourseDTO(BaseModel):
+    course_id: str
+    course_name: str
+    course_type: str
+    course_intro: str
+    course_outline: str
+    course_price: int
+    course_image: str
+# 缺少老師的 id, 待補充
 
 async def get_course_service() -> CourseService:
     engine = get_engine()
@@ -19,9 +30,21 @@ async def create_course(course: Course, service: CourseService = Depends(get_cou
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/courses/", response_model=List[Course])
+@router.get("/courses/", response_model=List[CourseDTO])
 async def list_course(service: CourseService = Depends(get_course_service)):
-    return await service.list_course()
+    courses = await service.list_course()
+    return [
+        CourseDTO(
+            course_id=str(course.course_id),
+            course_name=course.course_name,
+            course_type=course.course_type,
+            course_intro=course.course_intro,
+            course_outline=course.course_outline,
+            course_price=course.course_price,
+            course_image=course.course_image,
+        )
+        for course in courses
+    ]
 
 @router.get("/courses/{course_id}", response_model=Course)
 async def get_course(course_id: str, service: CourseService = Depends(get_course_service)):

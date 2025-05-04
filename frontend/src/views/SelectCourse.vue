@@ -10,50 +10,56 @@
       </div>
       <div class="shadow-gray-500 rounded-[8px] w-[100%] self-center p-5">
         <input
+          v-model="searchQuery"
           id="search-course-name"
           type="text"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
           placeholder="搜尋課程..."
         />
         <select
+          v-model="selectedType"
           id="course-type"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2"
         >
-          <option>所有類型</option>
-          <option>程式設計</option>
+          <option value="">所有類型</option>
+          <option v-for="type in courseTypes" :key="type" :value="type">
+            {{ type }}
+          </option>
         </select>
-        <button
-          class="bg-[#3498db] text-white w-[100%] rounded-lg p-2 mt-[16px] hover:bg-[#2d83bc]"
-        >
-          搜尋
-        </button>
       </div>
       <div
-        class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-[16px]"
+        class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-[16px] pb-6"
       >
         <div
+          v-for="course in filteredCourses"
+          :key="course.course_id"
           class="border-1 border-[#ddd] border-solid rounded-[8px] shadow-md shadow-gray-500 overflow-hidden"
         >
           <div class="h-[150px] bg-[#eee]">
-            <img alt="課程圖片" />
+            <img :src="course.course_image || defaultImage" alt="課程圖片" />
           </div>
           <div class="p-[15px] bg-white">
-            <p class="text-[20px] font-bold">課程名稱</p>
+            <p class="text-[20px] font-bold">{{ course.course_name }}</p>
             <div class="flex justify-between text-[#666] text-[16px] mt-2">
               <span>講師: </span>
               <span>5.0 ⭐</span>
             </div>
-            <p class="text-[#666] text-[16px] mt-2">課程簡介</p>
+            <p class="text-[#666] text-[16px] mt-2">
+              課程簡介: {{ course.course_intro }}
+            </p>
             <div class="flex justify-between text-[#666] text-[16px] mb-4">
-              <span>NT$</span>
+              <span>NT$ {{ course.course_price }}</span>
               <span>課程時數</span>
             </div>
             <button
-              @click="showDetails = true"
+              @click="(showDetails = true), (checkCourse = course.course_id)"
               class="bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2"
             >
               查看詳情
             </button>
+            <p class="text-[#666] text-[16px] mt-4">
+              課程類型: {{ course.course_type }}
+            </p>
           </div>
         </div>
       </div>
@@ -69,7 +75,13 @@
         <div
           class="overflow-y-auto max-h-[300px] text-[16px] text-[#666] border border-[#ddd] rounded-lg p-4"
         >
-          <p>課程大綱內容</p>
+          <p>
+            {{
+              courseStore.courses.find(
+                (course) => course.course_id === checkCourse
+              ).course_outline
+            }}
+          </p>
         </div>
         <button
           @click="showDetails = false"
@@ -88,15 +100,39 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useCourseStore } from "../stores/course";
+import { courseTypes } from "../stores/courseType";
 import NavBar from "../components/NavBar/NavBar.vue";
 
 const showDetails = ref(false);
+const courseStore = useCourseStore();
+const searchQuery = ref("");
+const selectedType = ref("");
+const checkCourse = ref("");
+const defaultImage = "../assets/images/default-course.png";
+
+const filteredCourses = computed(() => {
+  return courseStore.courses.filter((course) => {
+    const matchesQuery =
+      !searchQuery.value ||
+      course.course_name
+        .toLowerCase()
+        .includes(searchQuery.value.toLowerCase());
+    const matchesType =
+      !selectedType.value || course.course_type === selectedType.value;
+    return matchesQuery && matchesType;
+  });
+});
+
+onMounted(() => {
+  courseStore.fetchCourses();
+});
 </script>
 
 <style scoped>
 .SelectCourse {
   background-image: url("../assets/images/email-pattern.png");
-  height: 100vh;
+  min-height: 100vh;
 }
 </style>
