@@ -10,7 +10,7 @@ async def init_mongodb():
         client = AsyncIOMotorClient("mongodb://172.16.3.49:27017")
         await client.admin.command('ping') # 測試連接
         # 確保 engine 被正確設置
-        engine = AIOEngine(database="yangtest", client=client)
+        engine = AIOEngine(database="testDB", client=client)
         # 再次確認 engine 不為 None
         if engine is None:
             raise Exception("Engine initialization failed")
