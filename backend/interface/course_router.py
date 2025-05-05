@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import List
 from pydantic import BaseModel
 from domain.course import Course
@@ -17,8 +17,8 @@ class CourseDTO(BaseModel):
     course_image: str
 # 缺少老師的 id, 待補充
 
-async def get_course_service() -> CourseService:
-    engine = get_engine()
+async def get_course_service(request: Request) -> CourseService:
+    engine = get_engine(request.app)
     return CourseService(engine)
 
 @router.post("/courses/", response_model=Course)

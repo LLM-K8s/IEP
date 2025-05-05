@@ -6,7 +6,7 @@ async def init_mongodb(app: FastAPI):
     try:
         client = AsyncIOMotorClient("mongodb://172.16.3.49:27017")
         await client.admin.command("ping")  # 測試連線
-        engine = AIOEngine(database="yangtest", client=client)
+        engine = AIOEngine(database="testDB", client=client)
 
         # 確保 engine 被正確設置
         if engine is None:
