@@ -3,15 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from interface.user_router import router as user_router
 from interface.auth_router import router as auth_router
 from interface.course_router import router as course_router
-from infrastructure.mongodb import init_mongodb
+from infrastructure.mongodb import init_mongodb, close_mongodb
 from contextlib import asynccontextmanager
 import uvicorn
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_mongodb() # 啟動時執行
+    await init_mongodb(app)
     yield
-    pass # 關閉時執行
+    await close_mongodb(app)
 
 app = FastAPI(lifespan=lifespan)
 
