@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import List
 from domain.user import User
 from application.user_service import UserService
@@ -7,8 +7,8 @@ from application.auth_service import get_current_user
 
 router = APIRouter()
 
-def get_user_service() -> UserService:
-    return UserService(get_engine())
+def get_user_service(request: Request) -> UserService:
+    return UserService(get_engine(request.app))
 
 @router.post("/users", response_model=User)
 async def create_user(

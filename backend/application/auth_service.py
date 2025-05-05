@@ -9,6 +9,10 @@ from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicNumbers
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 import base64
+from domain.user import User
+from odmantic import AIOEngine
+from infrastructure.mongodb import get_engine
+from fastapi import Request
 
 security = HTTPBearer()
 
@@ -76,11 +80,38 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
         )
 
 # 用於獲取當前用戶的依賴
-async def get_current_user(payload: dict = Depends(verify_token)) -> dict:
-    return {
+async def get_current_user(
+    request: Request,
+    payload: dict = Depends(verify_token)
+) -> dict:
+    # 獲取用戶信息
+    user_info = {
         "sub": payload.get("sub"),
         "email": payload.get("email"),
-        "name": payload.get("name"),
+        "name": payload.get("name") or payload.get("preferred_username"),
         "preferred_username": payload.get("preferred_username"),
         "realm_access": payload.get("realm_access", {}).get("roles", [])
     }
+
+    # 檢查必要欄位
+    if not user_info["sub"] or not user_info["email"] or not user_info["name"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing required user information in token"
+        )
+
+    # 檢查用戶是否已存在
+    engine = get_engine(request.app)
+    existing_user = await engine.find_one(User, User.sub == user_info["sub"])
+
+    # 如果用戶不存在，創建新用戶
+    if not existing_user:
+        new_user = User(
+            sub=user_info["sub"],
+            user_email=user_info["email"],
+            name=user_info["name"],
+            is_teacher=False
+        )
+        await engine.save(new_user)
+
+    return user_info
