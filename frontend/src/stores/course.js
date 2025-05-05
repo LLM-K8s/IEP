@@ -1,48 +1,25 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import axios from "axios";
 
-export const useCourseStore = defineStore("course", () => {
-  // 定義課程欄位狀態
-  const courseName = ref("");
-  const courseType = ref("");
-  const courseIntro = ref("");
-  const courseOutline = ref("");
-  const courseImage = ref(null); // 檔案物件
-  const coursePrice = ref(null);
-
-  // 清空表單
-  function resetForm() {
-    courseName.value = "";
-    courseType.value = "";
-    courseIntro.value = "";
-    courseOutline.value = "";
-    courseImage.value = null;
-    coursePrice.value = null;
-  }
-
-  // 模擬送出資料 (可改成呼叫 API)
-  function submitCourse() {
-    // 這裡可以改成 axios.post 送到後端
-    console.log("送出的課程資料", {
-      courseName: courseName.value,
-      courseType: courseType.value,
-      courseIntro: courseIntro.value,
-      courseOutline: courseOutline.value,
-      courseImage: courseImage.value,
-      coursePrice: coursePrice.value,
-    });
-    // 送出後清空
-    resetForm();
-  }
-
-  return {
-    courseName,
-    courseType,
-    courseIntro,
-    courseOutline,
-    courseImage,
-    coursePrice,
-    resetForm,
-    submitCourse,
-  };
+export const useCourseStore = defineStore("courseStore", {
+  state: () => ({
+    courses: [], // 存儲課程列表
+    loading: false, // 加載狀態
+    error: null, // 錯誤訊息
+  }),
+  actions: {
+    async fetchCourses() {
+      this.loading = true;
+      this.error = null;
+      try {
+        const response = await axios.get("http://localhost:8000/api/courses/");
+        this.courses = response.data; // 將課程數據存入狀態
+      } catch (error) {
+        this.error = error.response?.data?.detail || "無法獲取課程資料";
+        console.error("Fetch courses error:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
 });

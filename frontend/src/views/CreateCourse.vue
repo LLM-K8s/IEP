@@ -13,7 +13,7 @@
           >課程名稱</label
         >
         <input
-          v-model="courseStore.courseName"
+          v-model="courseName"
           id="course-name"
           type="text"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
@@ -23,22 +23,20 @@
           >課程類型</label
         >
         <select
-          v-model="courseStore.courseType"
+          v-model="courseType"
           id="course-type"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
         >
           <option disabled value="" selected>請選擇類型</option>
-          <option>程式設計</option>
-          <option>專案管理</option>
-          <option>數學 & 科學</option>
-          <option>設計</option>
-          <option>職場技能</option>
+          <option v-for="type in courseTypes" :key="type" :value="type">
+            {{ type }}
+          </option>
         </select>
         <label for="course-intro" class="text-[20px] font-bold mb-[10px]"
           >課程簡介</label
         >
         <input
-          v-model="courseStore.courseIntro"
+          v-model="courseIntro"
           id="course-intro"
           type="text"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
@@ -48,7 +46,7 @@
           >教學大綱</label
         >
         <textarea
-          v-model="courseStore.courseOutline"
+          v-model="courseOutline"
           id="course-outline"
           type="text"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
@@ -56,11 +54,11 @@
           rows="5"
         ></textarea>
         <label for="course-image" class="text-[20px] font-bold mb-[10px]"
-          >課程封面圖片</label
+          >課程封面圖片(可選)</label
         >
         <input
           ref="fileInput"
-          @change="onFileChange"
+          @change="uploadFile"
           id="course-image"
           type="file"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4 hover:bg-gray-300"
@@ -70,7 +68,7 @@
         >
         <input
           id="course-price"
-          v-model="courseStore.coursePrice"
+          v-model="coursePrice"
           type="number"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
           placeholder="請輸入課程價格"
@@ -87,44 +85,97 @@
 </template>
 <script setup>
 import NavBar from "../components/NavBar/NavBar.vue";
-import { useCourseStore } from "../stores/course";
+import { courseTypes } from "../stores/courseType";
 import { ref } from "vue";
+import axios from "axios";
 import swal from "sweetalert";
 
-const courseStore = useCourseStore();
 const fileInput = ref(null);
 
+const courseName = ref("");
+const courseType = ref("");
+const courseIntro = ref("");
+const courseOutline = ref("");
+const courseImage = ref(null);
+const coursePrice = ref(null);
+const errorMessage = ref("");
+
+const resetForm = () => {
+  courseName.value = "";
+  courseType.value = "";
+  courseIntro.value = "";
+  courseOutline.value = "";
+  courseImage.value = null;
+  coursePrice.value = null;
+  errorMessage.value = "";
+};
+
+const submitCourse = async () => {
+  console.log("提交的課程資料:", {
+    course_name: courseName.value,
+    course_type: courseType.value,
+    course_intro: courseIntro.value,
+    course_outline: courseOutline.value,
+    course_image: courseImage.value,
+    course_price: Number(coursePrice.value), // 確保為數字
+  });
+
+  const payload = {
+    course_name: courseName.value,
+    course_type: courseType.value,
+    course_intro: courseIntro.value,
+    course_outline: courseOutline.value,
+    course_image: "",
+    course_price: Number(coursePrice.value),
+    course_content: [],
+  };
+
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/api/courses/",
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    swal("課程新增成功！", "", "success");
+    console.log("儲存成功:", response.data);
+    resetForm();
+  } catch (error) {
+    errorMessage.value = error.response?.data?.detail || "儲存失敗，請稍後再試";
+    swal("課程提交失敗！", "請稍後再試。", "error");
+    console.error("儲存失敗:", error);
+  }
+};
+
 // 處理檔案上傳事件
-function onFileChange(event) {
+function uploadFile(event) {
   const files = event.target.files;
   if (files && files.length > 0) {
-    courseStore.courseImage = files[0]; // 取第一個檔案
+    courseImage = files[0]; // 取第一個檔案
   } else {
-    courseStore.courseImage = null;
+    courseImage = null;
   }
 }
 
 // 送出申請
 function onSubmit() {
   if (
-    !courseStore.courseName ||
-    !courseStore.courseType ||
-    !courseStore.courseIntro ||
-    !courseStore.courseOutline ||
-    !courseStore.courseImage ||
-    courseStore.coursePrice === null
+    !courseName ||
+    !courseType ||
+    !courseIntro ||
+    !courseOutline ||
+    coursePrice === null
   ) {
     swal("請填寫所有欄位，才能提交審核！", "", "warning");
     return;
-  } else if (courseStore.coursePrice < 0) {
+  } else if (coursePrice < 0) {
     swal("課程價格不能為負數！", "", "warning");
     return;
   }
-
-  courseStore.submitCourse();
-  if (fileInput.value) {
-    fileInput.value.value = ""; // 清空檔案輸入
-  }
+  submitCourse();
 }
 </script>
 <style scoped>
