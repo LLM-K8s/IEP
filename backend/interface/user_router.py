@@ -23,26 +23,37 @@ async def list_users(
     service: UserService = Depends(get_user_service),
     current_user: dict = Depends(get_current_user)
 ):
+    print(current_user)
     return await service.list_users()
 
-@router.get("/users/{user_id}", response_model=User)
+@router.get("/users/{user_sub}", response_model=User)
 async def get_user(
-    user_id: str,
+    user_sub: str,
     service: UserService = Depends(get_user_service),
     current_user: dict = Depends(get_current_user)
 ):
-    user = await service.get_user(user_id)
+    user = await service.get_user(user_sub)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.delete("/users/{user_id}")
-async def delete_user(
-    user_id: str,
+@router.get("/current_user", response_model=User)
+async def get_current_user(
     service: UserService = Depends(get_user_service),
     current_user: dict = Depends(get_current_user)
 ):
-    success = await service.delete_user(user_id)
+    user = await service.get_user(current_user["sub"])
+    if not user:
+        raise HTTPException(status_code=404, detail="Current user not found")
+    return user
+
+@router.delete("/users/{user_sub}")
+async def delete_user(
+    user_sub: str,
+    service: UserService = Depends(get_user_service),
+    current_user: dict = Depends(get_current_user)
+):
+    success = await service.delete_user(user_sub)
     if not success:
         raise HTTPException(status_code=404, detail="User not found")
     return {"message": "User deleted successfully"}

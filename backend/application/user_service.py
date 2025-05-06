@@ -14,17 +14,17 @@ class UserService:
     async def list_users(self) -> List[User]:
         return await self.engine.find(User, {})
 
-    async def get_user(self, user_id: str) -> User | None:
+    async def get_user(self, user_sub: str) -> User | None:
         try:
-            object_id = ObjectId(user_id)
-            return await self.engine.find_one(User, User.id == object_id)
+            sub = user_sub
+            return await self.engine.find_one(User, User.user_sub == sub)
         except:
             return None
 
-    async def delete_user(self, user_id: str) -> bool:
+    async def delete_user(self, user_sub: str) -> bool:
         try:
-            object_id = ObjectId(user_id)
-            user = await self.engine.find_one(User, User.id == object_id)
+            sub = user_sub
+            user = await self.engine.find_one(User, User.user_sub == sub)
             if user:
                 await self.engine.delete(user)
                 return True
