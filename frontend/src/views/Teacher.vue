@@ -1,6 +1,5 @@
 <template>
-  <div class="Teacher">
-    <NavBar />
+  <DefaultLayout>
     <div class="w-[90%] mx-[5%]">
       <div class="pt-20 w-[100%]">
         <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
@@ -81,10 +80,10 @@
         </button>
       </div>
     </div>
-  </div>
+  </DefaultLayout>
 </template>
 <script setup>
-import NavBar from "../components/NavBar/NavBar.vue";
+import DefaultLayout from "../Layout/default.vue";
 import { ref, computed } from "vue";
 
 const tags = ref([]);

@@ -1,6 +1,5 @@
 <template>
-  <div class="MyCourse">
-    <NavBar />
+  <DefaultLayout>
     <div class="w-[90%] mx-[5%]">
       <div class="pt-20 w-[100%]">
         <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
@@ -31,16 +30,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </DefaultLayout>
 </template>
 
 <script setup>
-import NavBar from "../components/NavBar/NavBar.vue";
-</script>
+import DefaultLayout from "../Layout/default.vue";
 
-<style scoped>
-.MyCourse {
-  background-image: url("../assets/images/email-pattern.png");
-  height: 100vh;
-}
-</style>
+</script>

@@ -1,6 +1,5 @@
 <template>
-  <div class="SelectCourse">
-    <NavBar />
+  <DefaultLayout>
     <div class="w-[90%] mx-[5%]">
       <div class="pt-20 w-[100%]">
         <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
@@ -96,14 +95,14 @@
         </button>
       </div>
     </div>
-  </div>
+  </DefaultLayout>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useCourseStore } from "../stores/course";
 import { courseTypes } from "../stores/courseType";
-import NavBar from "../components/NavBar/NavBar.vue";
+import DefaultLayout from "../Layout/default.vue";
 
 const showDetails = ref(false);
 const courseStore = useCourseStore();

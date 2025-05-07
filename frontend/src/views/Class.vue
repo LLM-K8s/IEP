@@ -1,6 +1,5 @@
 <template>
-  <div class="Class">
-    <NavBar />
+  <DefaultLayout>
     <div class="w-[90%] mx-[5%] pb-4">
       <div class="pt-20 w-[100%]">
         <router-link
@@ -146,13 +145,13 @@
         </button>
       </div>
     </div>
-  </div>
+  </DefaultLayout>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import NavBar from "../components/NavBar/NavBar.vue";
 import swal from "sweetalert";
+import DefaultLayout from "../Layout/default.vue";
 
 // 課程資料
 const assignments = ref([
@@ -274,9 +273,3 @@ const getIcon = (type) => {
 };
 </script>
 
-<style scoped>
-.Class {
-  background-image: url("../assets/images/email-pattern.png");
-  min-height: 100vh;
-}
-</style>
