@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import List
-from pydantic import BaseModel
+from bson import ObjectId
 from domain.course import Course
 from application.course_service import CourseService
 from application.course_DTO import GetCourseDTO
@@ -21,7 +21,9 @@ async def create_course(
 ):
     try:
         if course.course_content is None:
-            course.course_content = []  # 默認為空列表
+            course.course_content = []  # 默認課程內容為空
+        if course.teacher_id is not None:
+            course.teacher_id = ObjectId(course.teacher_id)
         return await service.create_course(course)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
