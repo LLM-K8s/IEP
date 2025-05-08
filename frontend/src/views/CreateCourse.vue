@@ -85,12 +85,16 @@
 <script setup>
 import DefaultLayout from "../Layout/default.vue";
 import { courseTypes } from "../stores/courseType";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useUserStore } from "../stores/user";
+import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import swal from "sweetalert";
 
-const fileInput = ref(null);
+const userStore = useUserStore();
+const authStore = useAuthStore();
 
+const fileInput = ref(null);
 const courseName = ref("");
 const courseType = ref("");
 const courseIntro = ref("");
@@ -110,13 +114,16 @@ const resetForm = () => {
 };
 
 const submitCourse = async () => {
+  const teacherId = userStore.userInfo.user_id;
+
   console.log("提交的課程資料:", {
     course_name: courseName.value,
     course_type: courseType.value,
     course_intro: courseIntro.value,
     course_outline: courseOutline.value,
     course_image: courseImage.value,
-    course_price: Number(coursePrice.value), // 確保為數字
+    course_price: Number(coursePrice.value),
+    teacher_id: teacherId,
   });
 
   const payload = {
@@ -127,6 +134,7 @@ const submitCourse = async () => {
     course_image: "",
     course_price: Number(coursePrice.value),
     course_content: [],
+    teacher_id: teacherId,
   };
 
   try {
@@ -136,6 +144,7 @@ const submitCourse = async () => {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authStore.currentUser.access_token}`,
         },
       }
     );
@@ -161,19 +170,24 @@ function uploadFile(event) {
 
 // 送出申請
 function onSubmit() {
+  console.log(coursePrice.value);
   if (
-    !courseName ||
-    !courseType ||
-    !courseIntro ||
-    !courseOutline ||
-    coursePrice === null
+    courseName.value === "" ||
+    courseType.value === "" ||
+    courseIntro.value === "" ||
+    courseOutline.value === "" ||
+    coursePrice.value === null
   ) {
     swal("請填寫所有欄位，才能提交審核！", "", "warning");
     return;
-  } else if (coursePrice < 0) {
+  } else if (coursePrice.value < 0) {
     swal("課程價格不能為負數！", "", "warning");
     return;
   }
   submitCourse();
 }
+
+onMounted(() => {
+  userStore.fetchUser();
+});
 </script>

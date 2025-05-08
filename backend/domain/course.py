@@ -26,4 +26,4 @@ class Course(Model):
     course_content: List[Chapter]
     create_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))  # UTC
     last_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))
-    teacher_id: Optional[ObjectId] = None
+    teacher_id: Optional[ObjectId]
