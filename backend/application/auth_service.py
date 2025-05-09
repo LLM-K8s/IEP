@@ -1,5 +1,4 @@
 import base64
-import os
 
 import requests
 from cryptography.hazmat.backends import default_backend
@@ -10,13 +9,14 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 
 from domain.user import User
+from infrastructure.config import settings
 from infrastructure.mongodb import get_engine
 
 security = HTTPBearer()
 
 # 這些值應該從環境變量中讀取
-OIDC_ISSUER = os.getenv('OIDC_ISSUER', 'http://172.16.1.16:8081/realms/coder')
-OIDC_AUDIENCE = os.getenv('OIDC_AUDIENCE', 'account')
+OIDC_ISSUER = settings.OIDC_ISSUER
+OIDC_AUDIENCE = settings.OIDC_AUDIENCE
 
 
 def int_from_base64url(b64urlstring):
