@@ -4,7 +4,7 @@ import { useAuthStore } from "../stores/auth";
 import Callback from "../views/Callback.vue";
 import Class from "../views/Class.vue";
 import CreateCourse from "../views/CreateCourse.vue";
-import Home from "../views/Home.vue";
+import Home from "../views/Home/index.vue";
 import MyCourse from "../views/MyCourse.vue";
 import SelectCourse from "../views/SelectCourse.vue";
 import Teacher from "../views/Teacher.vue";
