@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { authService } from "../services/auth";
 import axios from "axios";
+import { defineStore } from "pinia";
+import { computed, ref } from "vue";
+import { authService } from "../services/auth";
 
 export const useAuthStore = defineStore("auth", () => {
   // 狀態

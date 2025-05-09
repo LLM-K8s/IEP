@@ -35,5 +35,4 @@
 
 <script setup>
 import DefaultLayout from "../Layout/default.vue";
-
 </script>

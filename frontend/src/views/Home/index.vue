@@ -10,15 +10,13 @@
               ><template v-slot:title>豐富的課程資源</template
               ><template v-slot:text
                 >涵蓋各種領域的優質課程，從程式設計到語言學習，應有盡有</template
-              ></FeaturesCard
-            >
+              ></FeaturesCard>
             <FeaturesCard
               ><template v-slot:icon>📈</template
               ><template v-slot:title>提升學習效率</template
               ><template v-slot:text
                 >學生可以更專注於學習和實作，減少因環境問題等造成不必要的困擾</template
-              ></FeaturesCard
-            >
+              ></FeaturesCard>
             <FeaturesCard
               ><template v-slot:icon>🌐</template
               ><template v-slot:title>雲端開發</template
@@ -59,19 +57,15 @@
 </template>
 
 <script setup>
-import HeroSection from "../components/HeroSection.vue";
-import FeaturesCardList from "../components/Feature/FeaturesCardList.vue";
-import FeaturesCard from "../components/Feature/FeaturesCard.vue";
-import HotCourseLayout from "../components/HotCourse/HotCourseLayout.vue";
-import HotCourse from "../components/HotCourse/HotCourse.vue";
-import DefaultLayout from "../Layout/default.vue";
+import DefaultLayout from "../../Layout/default.vue";
+import FeaturesCard from "./Feature/FeaturesCard.vue";
+import FeaturesCardList from "./Feature/FeaturesCardList.vue";
+import HeroSection from "./HeroSection.vue";
+import HotCourse from "./HotCourse/HotCourse.vue";
+import HotCourseLayout from "./HotCourse/HotCourseLayout.vue";
 </script>
 
 <style scoped>
-.hero-section {
-  padding: 2rem 0;
-}
-
 .features-section,
 .hotcourse-section {
   padding: 2rem 0;

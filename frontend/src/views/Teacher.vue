@@ -82,9 +82,10 @@
     </div>
   </DefaultLayout>
 </template>
+
 <script setup>
+import { computed, ref } from "vue";
 import DefaultLayout from "../Layout/default.vue";
-import { ref, computed } from "vue";
 
 const tags = ref([]);
 const inputTagValue = ref("");
@@ -114,6 +115,7 @@ const focusInput = () => {
 
 const password = ref("");
 </script>
+
 <style scoped>
 .Teacher {
   background-image: url("../assets/images/email-pattern.png");

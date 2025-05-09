@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import axios from "axios";
+import { defineStore } from "pinia";
 
 export const useCourseStore = defineStore("courseStore", {
   state: () => ({
@@ -13,8 +13,8 @@ export const useCourseStore = defineStore("courseStore", {
       this.error = null;
       this.authInfo = JSON.parse(
         localStorage.getItem(
-          "oidc.user:http://172.16.1.16:8081/realms/coder:vue"
-        )
+          "oidc.user:http://172.16.1.16:8081/realms/coder:vue",
+        ),
       );
       try {
         const response = await axios.get("http://localhost:8000/api/courses/", {
