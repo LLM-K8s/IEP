@@ -99,10 +99,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
+import DefaultLayout from "../Layout/default.vue";
 import { useCourseStore } from "../stores/course";
 import { courseTypes } from "../stores/courseType";
-import DefaultLayout from "../Layout/default.vue";
 
 const showDetails = ref(false);
 const courseStore = useCourseStore();
@@ -113,13 +113,11 @@ const defaultImage = "../assets/images/default-course.png";
 
 const filteredCourses = computed(() => {
   return courseStore.courses.filter((course) => {
-    const matchesQuery =
-      !searchQuery.value ||
-      course.course_name
+    const matchesQuery = !searchQuery.value
+      || course.course_name
         .toLowerCase()
         .includes(searchQuery.value.toLowerCase());
-    const matchesType =
-      !selectedType.value || course.course_type === selectedType.value;
+    const matchesType = !selectedType.value || course.course_type === selectedType.value;
     return matchesQuery && matchesType;
   });
 });

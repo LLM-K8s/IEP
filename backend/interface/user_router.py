@@ -1,9 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import List
-from domain.user import User
-from application.user_service import UserService
-from infrastructure.mongodb import get_engine
+
+from fastapi import APIRouter, Depends, HTTPException, Request
+
 from application.auth_service import get_current_user
+from application.user_service import UserService
+from domain.user import User
+from infrastructure.mongodb import get_engine
 
 router = APIRouter()
 

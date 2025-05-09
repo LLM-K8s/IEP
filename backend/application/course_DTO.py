@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class GetCourseDTO(BaseModel):
     course_id: str
     course_name: str

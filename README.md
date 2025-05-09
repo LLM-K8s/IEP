@@ -1,3 +1,4 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/LLM-K8s/IEP)
 # 整合式教學平台 Integrated Education Platform
 
 ## 🧭 簡介

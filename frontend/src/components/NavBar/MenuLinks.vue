@@ -1,7 +1,7 @@
 <script setup>
+import { useAuthStore } from "@/stores/auth"; // 路徑請依實際調整
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
-import { useAuthStore } from "@/stores/auth"; // 路徑請依實際調整
 
 const props = defineProps({ isMobile: Boolean });
 const emit = defineEmits(["itemClick"]);
@@ -44,9 +44,7 @@ const linkClass = computed(() => [
   "text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
   props.isMobile ? "block text-center" : "text-[16px]",
 ]);
-const containerClass = computed(() =>
-  props.isMobile ? "space-y-3" : "flex space-x-2"
-);
+const containerClass = computed(() => props.isMobile ? "space-y-3" : "flex space-x-2");
 
 function onLinkClick(link) {
   if (link.action) {

@@ -1,8 +1,11 @@
 from typing import List
-from odmantic import AIOEngine
-from domain.course import Course
+
 from bson import ObjectId
+from odmantic import AIOEngine
 from pydantic import ValidationError
+
+from domain.course import Course
+
 
 class CourseService:
     def __init__(self, engine: AIOEngine):
@@ -22,7 +25,7 @@ class CourseService:
         try:
             object_id = ObjectId(course_id)
             return await self.engine.find_one(Course, Course.course_id == object_id)
-        except:
+        except:  # noqa: E722
             return None
 
     async def delete_course(self, course_id: str) -> bool:
@@ -33,5 +36,5 @@ class CourseService:
                 await self.engine.delete(course)
                 return True
             return False
-        except:
+        except:  # noqa: E722
             return False

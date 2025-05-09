@@ -38,9 +38,11 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref } from "vue";
 
 const showDetails = ref(false);
 </script>
+
 <style scoped></style>

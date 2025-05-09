@@ -1,7 +1,9 @@
 from typing import List
+
 from odmantic import AIOEngine
+
 from domain.user import User
-from bson import ObjectId
+
 
 class UserService:
     def __init__(self, engine: AIOEngine):
@@ -18,7 +20,7 @@ class UserService:
         try:
             sub = user_sub
             return await self.engine.find_one(User, User.user_sub == sub)
-        except:
+        except Exception:
             return None
 
     async def delete_user(self, user_sub: str) -> bool:
@@ -29,5 +31,5 @@ class UserService:
                 await self.engine.delete(user)
                 return True
             return False
-        except:
+        except Exception:
             return False

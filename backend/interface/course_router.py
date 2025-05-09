@@ -1,10 +1,12 @@
-from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import List
+
 from bson import ObjectId
-from domain.course import Course
-from application.course_service import CourseService
-from application.course_DTO import GetCourseDTO
+from fastapi import APIRouter, Depends, HTTPException, Request
+
 from application.auth_service import get_current_user
+from application.course_DTO import GetCourseDTO
+from application.course_service import CourseService
+from domain.course import Course
 from infrastructure.mongodb import get_engine
 
 router = APIRouter()
