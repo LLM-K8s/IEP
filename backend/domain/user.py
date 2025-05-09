@@ -1,6 +1,8 @@
-from odmantic import Model, Field
 from typing import Optional
+
 from bson import ObjectId
+from odmantic import Field, Model
+
 
 class User(Model):
     user_id: Optional[ObjectId] = Field(default_factory=ObjectId, primary_field=True)

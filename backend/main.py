@@ -1,11 +1,14 @@
+from contextlib import asynccontextmanager
+
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from interface.user_router import router as user_router
+
+from infrastructure.mongodb import close_mongodb, init_mongodb
 from interface.auth_router import router as auth_router
 from interface.course_router import router as course_router
-from infrastructure.mongodb import init_mongodb, close_mongodb
-from contextlib import asynccontextmanager
-import uvicorn
+from interface.user_router import router as user_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

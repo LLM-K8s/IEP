@@ -1,6 +1,7 @@
+from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
 from odmantic import AIOEngine
-from fastapi import FastAPI
+
 
 async def init_mongodb(app: FastAPI):
     try:
