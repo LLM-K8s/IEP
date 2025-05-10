@@ -25,7 +25,6 @@ async def list_users(
     service: UserService = Depends(get_user_service),
     current_user: dict = Depends(get_current_user)
 ):
-    print(current_user)
     return await service.list_users()
 
 @router.get("/users/{user_sub}", response_model=User)
