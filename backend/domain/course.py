@@ -29,3 +29,4 @@ class Course(Model):
     create_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))  # UTC  # noqa: E501
     last_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))
     teacher_id: Optional[ObjectId]
+    students: List[ObjectId]

@@ -12,7 +12,9 @@
         />
 
         <div class="mb-4">
-          <label for="course-type" class="text-[20px] font-bold mb-[10px]">課程類型</label>
+          <label for="course-type" class="text-[20px] font-bold mb-[10px]"
+            >課程類型</label
+          >
           <select
             v-model="courseType"
             id="course-type"
@@ -33,7 +35,9 @@
         />
 
         <div class="mb-4">
-          <label for="course-outline" class="text-[20px] font-bold mb-[10px]">教學大綱</label>
+          <label for="course-outline" class="text-[20px] font-bold mb-[10px]"
+            >教學大綱</label
+          >
           <textarea
             v-model="courseOutline"
             id="course-outline"
@@ -95,12 +99,12 @@ const coursePrice = ref(null);
 
 const isFormValid = computed(() => {
   return (
-    courseName.value
-    && courseType.value
-    && courseIntro.value
-    && courseOutline.value
-    && coursePrice.value !== null
-    && coursePrice.value >= 0
+    courseName.value &&
+    courseType.value &&
+    courseIntro.value &&
+    courseOutline.value &&
+    coursePrice.value !== null &&
+    coursePrice.value >= 0
   );
 });
 
@@ -129,6 +133,7 @@ const submitCourse = async () => {
     course_price: Number(coursePrice.value),
     course_content: [],
     teacher_id: teacherId,
+    students: [],
   };
 
   try {
@@ -140,7 +145,7 @@ const submitCourse = async () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authStore.currentUser.access_token}`,
         },
-      },
+      }
     );
     swal("課程新增成功！", "", "success");
     console.log("儲存成功:", response.data);
