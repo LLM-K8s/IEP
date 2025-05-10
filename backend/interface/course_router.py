@@ -22,8 +22,6 @@ async def create_course(
     current_user: dict = Depends(get_current_user),
 ):
     try:
-        if course.course_content is None:
-            course.course_content = []  # 默認課程內容為空
         if course.teacher_id is not None:
             course.teacher_id = ObjectId(course.teacher_id)
         return await service.create_course(course)
@@ -45,6 +43,8 @@ async def list_course(
             course_outline=course.course_outline,
             course_price=course.course_price,
             course_image=course.course_image,
+            teacher_id=str(course.teacher_id),
+            students=str(course.students)
         )
         for course in courses
     ]
@@ -72,3 +72,18 @@ async def delete_course(
             status_code=404, detail=f"Course with ID {course_id} not found"
         )
     return {"message": f"Course with ID {course_id} deleted successfully"}
+
+@router.patch("/courses/{course_id}", response_model=Course)
+async def patch_course(
+    course_id: str,
+    course_data: dict,
+    service: CourseService = Depends(get_course_service),
+    current_user: dict = Depends(get_current_user),
+):
+    try:
+        course = await service.patch_course(course_id, course_data)
+        if not course:
+            raise HTTPException(status_code=404, detail="Course not found")
+        return course
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
