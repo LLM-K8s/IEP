@@ -40,7 +40,14 @@
           <div class="p-[15px] bg-white">
             <p class="text-[20px] font-bold">{{ course.course_name }}</p>
             <div class="flex justify-between text-[#666] text-[16px] mt-2">
-              <span>講師: </span>
+              <span>
+                講師:
+                {{
+                  userStore.allUsersInfo.find(
+                    (user) => user.user_id === course.teacher_id
+                  )?.user_name || "未知的講師"
+                }}
+              </span>
               <span>5.0 ⭐</span>
             </div>
             <p class="text-[#666] text-[16px] mt-2">
@@ -48,13 +55,19 @@
             </p>
             <div class="flex justify-between text-[#666] text-[16px] mb-4">
               <span>NT$ {{ course.course_price }}</span>
-              <span>課程時數</span>
             </div>
             <button
               @click="(showDetails = true), (checkCourse = course.course_id)"
+              :disabled="
+                course.students.includes(userStore.currentUserInfo.user_id)
+              "
               class="bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2"
             >
-              查看詳情
+              {{
+                course.students.includes(userStore.currentUserInfo.user_id)
+                  ? "已加入課程"
+                  : "查看詳情"
+              }}
             </button>
             <p class="text-[#666] text-[16px] mt-4">
               課程類型: {{ course.course_type }}
@@ -64,48 +77,59 @@
       </div>
     </div>
 
-    <!-- 浮動介面 -->
+    <!-- 課程大綱介面 -->
     <div
       v-if="showDetails"
       class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800/50"
     >
-      <div class="bg-white p-8 rounded-lg w-[90%] shadow-lg md:w-[50%]">
-        <h2 class="text-[24px] font-bold mb-4">課程大綱</h2>
-        <div
-          class="overflow-y-auto max-h-[300px] text-[16px] text-[#666] border border-[#ddd] rounded-lg p-4"
-        >
-          <p>
-            {{
+      <CourseOutline>
+        <template v-slot:Outline>
+          <textarea
+            v-model="
               courseStore.courses.find(
                 (course) => course.course_id === checkCourse
               ).course_outline
-            }}
-          </p>
-        </div>
-        <button
-          @click="showDetails = false"
-          class="mt-4 bg-[#e74c3c] hover:bg-[#c0392b] text-white rounded-lg p-2"
-        >
-          關閉
-        </button>
-        <button
-          class="mt-4 bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2 float-end"
-        >
-          選擇課程
-        </button>
-      </div>
+            "
+            class="w-full h-[300px] border-3 border-[#5e5e5e] rounded-lg p-4"
+            readonly
+          ></textarea>
+        </template>
+        <template v-slot:Button>
+          <div class="flex justify-between">
+            <button
+              @click="showDetails = false"
+              class="mt-4 bg-[#e74c3c] hover:bg-[#c0392b] text-white rounded-lg p-2 w-full"
+            >
+              關閉
+            </button>
+            <button
+              @click="chooseCourse(checkCourse)"
+              class="mt-4 bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2 w-full float-end"
+            >
+              選擇課程
+            </button>
+          </div>
+        </template>
+      </CourseOutline>
     </div>
   </DefaultLayout>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import DefaultLayout from "../Layout/default.vue";
+import { ref, computed, onMounted } from "vue";
 import { useCourseStore } from "../stores/course";
+import { useUserStore } from "../stores/user";
 import { courseTypes } from "../stores/courseType";
+import { useAuthStore } from "../stores/auth";
+import DefaultLayout from "../Layout/default.vue";
+import CourseOutline from "../components/CourseOutline.vue";
+import axios from "axios";
+
+const courseStore = useCourseStore();
+const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const showDetails = ref(false);
-const courseStore = useCourseStore();
 const searchQuery = ref("");
 const selectedType = ref("");
 const checkCourse = ref("");
@@ -113,17 +137,59 @@ const defaultImage = "../assets/images/default-course.png";
 
 const filteredCourses = computed(() => {
   return courseStore.courses.filter((course) => {
-    const matchesQuery = !searchQuery.value
-      || course.course_name
+    const matchesQuery =
+      !searchQuery.value ||
+      course.course_name
         .toLowerCase()
         .includes(searchQuery.value.toLowerCase());
-    const matchesType = !selectedType.value || course.course_type === selectedType.value;
+    const matchesType =
+      !selectedType.value || course.course_type === selectedType.value;
     return matchesQuery && matchesType;
   });
 });
 
+const chooseCourse = async (courseId) => {
+  console.log("選擇的課程ID:", courseId);
+  const selectedCourse = courseStore.courses.find(
+    (course) => course.course_id === courseId
+  );
+  if (selectedCourse.course_price === 0) {
+    console.log("免費課程");
+    const nowStudents = [
+      ...selectedCourse.students.matchAll(/ObjectId\('([a-f\d]{24})'\)/gi),
+    ].map((m) => m[1]);
+    const newStudent = userStore.currentUserInfo.user_id;
+    const payload = {
+      students: [...nowStudents, newStudent],
+    };
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/api/courses/${selectedCourse.course_id}`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authStore.currentUser.access_token}`,
+          },
+        }
+      );
+      swal("選擇成功！", "已將課程新增至您的課程清單", "success");
+      showDetails.value = false;
+      console.log("選擇成功:", response.data);
+    } catch (error) {
+      console.error("選擇課程失敗:", error);
+      swal("選擇失敗！", "請稍後再試", "error");
+    }
+  } else {
+    console.log("付費課程");
+    swal("目前無法使用", "尚未提供付費功能，敬請期待", "info");
+  }
+  courseStore.fetchCourses();
+};
+
 onMounted(() => {
   courseStore.fetchCourses();
+  userStore.fetchUser();
 });
 </script>
 
