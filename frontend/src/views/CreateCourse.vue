@@ -2,7 +2,6 @@
   <DefaultLayout>
     <div class="w-[90%] mx-[5%]">
       <PageTitle title="建立新課程 📚" />
-
       <div class="shadow-gray-500 rounded-[8px] w-[100%] self-center p-5">
         <Input
           id="course-name"
@@ -18,7 +17,7 @@
           <select
             v-model="courseType"
             id="course-type"
-            class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
+            class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2"
           >
             <option disabled value="" selected>請選擇類型</option>
             <option v-for="type in courseTypes" :key="type" :value="type">
@@ -41,7 +40,7 @@
           <textarea
             v-model="courseOutline"
             id="course-outline"
-            class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
+            class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2"
             placeholder="請描述課程內容與學習目標"
             rows="5"
           ></textarea>
