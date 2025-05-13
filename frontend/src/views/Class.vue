@@ -1,15 +1,19 @@
 <template>
   <DefaultLayout>
     <div class="w-[90%] mx-[5%] pb-4">
-      <PageTitle title="課程內容" :showBackButton="true" backRoute="/MyCourse" />
-
-      <Button
-        @click="toggleNewChapter"
-        :class="[showNewChapter ? 'mb-0' : 'mb-5']"
-      >
-        {{ showNewChapter ? "新增課程章節 🔼" : "新增課程章節 🔽" }}
-      </Button>
-
+      <PageTitle
+        title="課程內容"
+        :showBackButton="true"
+        backRoute="/MyCourse"
+      />
+      <div class="flex justify-end">
+        <Button
+          @click="toggleNewChapter"
+          :class="[showNewChapter ? 'mb-0 mt-2' : 'mb-5 mt-2']"
+        >
+          {{ showNewChapter ? "新增課程章節 🔼" : "新增課程章節 🔽" }}
+        </Button>
+      </div>
       <div v-if="showNewChapter" class="mb-8 bg-white rounded-2xl shadow p-4">
         <Input
           id="new-chapter"
@@ -17,21 +21,16 @@
           label="章節名稱"
           placeholder="輸入章節名稱"
         />
-        <Button
-          variant="primary"
-          fullWidth
-          @click="addNewChapter"
-        >
+        <Button variant="primary" fullWidth @click="addNewChapter">
           新增章節
         </Button>
       </div>
-
       <ChapterManager
         v-for="(week, index) in assignments"
         :key="week.chapter"
         :chapter="{
           title: week.chapter,
-          items: week.items
+          items: week.items,
         }"
         @delete="removeChapter(index)"
         @delete-item="(itemIndex) => removeItem(index, itemIndex)"
@@ -45,12 +44,10 @@
         >
           {{ showFileEditor[index] ? "新增課程內容 ➖" : "新增課程內容 ➕" }}
         </Button>
-
         <ContentEditor
           v-if="showFileEditor[index]"
           @save="(content) => addContent(index, content)"
         />
-
         <Button
           @click="toggleFileSubmission(index)"
           variant="primary"
@@ -60,7 +57,6 @@
         >
           {{ showFileSubmission[index] ? "作業繳交區 🔼" : "作業繳交區 🔽" }}
         </Button>
-
         <div
           v-if="showFileSubmission[index]"
           class="mt-4 p-4 bg-gray-100 rounded-xl border border-blue-300"
@@ -70,7 +66,6 @@
             @file-selected="handleHomeworkUpload"
           />
         </div>
-
         <Button
           @click="toggleReviewPanel(index)"
           variant="primary"
