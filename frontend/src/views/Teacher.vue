@@ -44,22 +44,21 @@
           editorStyle="height: 200px"
           class="mb-4"
         />
-        <label for="course-outline" class="text-[20px] font-bold mb-[10px]"
-          >授課類型</label
-        >
-        <div
-          class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
-          @click="focusInput"
-        >
-          <!-- 已添加的標籤 -->
-          <span
-            v-for="(tag, index) in tags"
-            :key="index"
-            class="inline-flex items-center bg-blue-200 text-gray-800 text-sm rounded-full px-3 py-1 mr-2"
+        <div class="flex flex-col gap-2">
+          <label for="course-outline" class="text-[20px] font-bold mb-[10px]"
+            >授課類型</label
           >
-            {{ tag }}
-            <button @click.stop="removeTag(index)" class="ml-1">X</button>
-          </span>
+          <!-- 標籤容器 -->
+          <div class="flex flex-wrap gap-2 mb-2" v-if="tags.length > 0">
+            <Chip
+              v-for="tag in tags"
+              :key="tag.id"
+              :label="tag.text"
+              removable
+              class="cursor-pointer"
+              @click="removeTag(tag.id)"
+            />
+          </div>
 
           <!-- 輸入框 -->
           <InputText
@@ -67,8 +66,9 @@
             v-model="inputTagValue"
             @keydown.enter="addTag"
             @keydown.delete="handleBackspace"
-            class="flex-grow px-2 py-1 outline-none w-full"
+            class="w-full bg-white shadow-2xs shadow-gray-500 text-[16px] border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-6"
             placeholder="輸入類型標籤後按 Enter 新增"
+            @click="focusInput"
           />
         </div>
         <Button
@@ -84,6 +84,7 @@
 import Button from "primevue/button";
 import Editor from "primevue/editor";
 import InputText from "primevue/inputtext";
+import Chip from 'primevue/chip';
 import { ref } from "vue";
 import DefaultLayout from "../Layout/default.vue";
 
@@ -94,19 +95,26 @@ const aboutMe = ref("");
 
 const addTag = () => {
   const tag = inputTagValue.value.trim();
-  if (tag && !tags.value.includes(tag)) {
-    tags.value.push(tag);
+  if (tag && !tags.value.some(t => t.text === tag)) {
+    tags.value.push({
+      id: Date.now() + Math.random().toString(36).substr(2, 9),
+      text: tag
+    });
     inputTagValue.value = "";
   }
 };
 
-const removeTag = (index) => {
-  tags.value.splice(index, 1);
+const removeTag = (tagId) => {
+  const index = tags.value.findIndex(tag => tag.id === tagId);
+  if (index !== -1) {
+    tags.value = tags.value.filter(tag => tag.id !== tagId);
+  }
 };
 
 const handleBackspace = () => {
   if (inputTagValue.value === "" && tags.value.length > 0) {
-    tags.value.pop();
+    const lastTag = tags.value[tags.value.length - 1];
+    removeTag(lastTag.id);
   }
 };
 
@@ -115,4 +123,68 @@ const focusInput = () => {
 };
 
 const password = ref("");
+
+// 添加自定義樣式
+const chipStyle = `
+  .p-chip .p-chip-remove-icon {
+    display: none;
+  }
+  .p-chip:hover .p-chip-remove-icon {
+    display: inline-flex;
+  }
+`;
 </script>
+
+<style scoped>
+:deep(.p-chip) {
+  background-color: #E8F0FE;
+  color: #1a73e8;
+  border-radius: 16px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  border: 1px solid #D2E3FC;
+  cursor: pointer;
+  user-select: none;
+}
+
+:deep(.p-chip:hover) {
+  background-color: #D2E3FC;
+  border-color: #1a73e8;
+}
+
+:deep(.p-chip .p-chip-remove-icon) {
+  display: none;
+  color: #1a73e8;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+}
+
+:deep(.p-chip:hover .p-chip-remove-icon) {
+  display: inline-flex;
+}
+
+:deep(.p-chip .p-chip-text) {
+  line-height: 1.5;
+}
+
+:deep(.p-inputtext) {
+  background-color: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+:deep(.p-inputtext:hover) {
+  border-color: #D1D5DB;
+  background-color: #F3F4F6;
+}
+
+:deep(.p-inputtext:focus) {
+  background-color: #FFFFFF;
+  border-color: #93C5FD;
+  box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.2);
+  outline: none;
+}
+</style>
