@@ -3,71 +3,85 @@
     <div class="w-[90%] mx-[5%]">
       <PageTitle title="建立新課程 📚" />
       <div class="shadow-gray-500 rounded-[8px] w-[100%] self-center p-5">
-        <Input
-          id="course-name"
-          v-model="courseName"
-          label="課程名稱"
-          placeholder="請輸入課程名稱"
-        />
+        <div class="mb-6">
+          <label for="course-type" class="text-[20px] font-bold mb-[10px] block"
+            >課程名稱</label
+          >
+          <InputText
+            id="course-name"
+            v-model="courseName"
+            placeholder="請輸入課程名稱"
+            class="w-full"
+          />
+        </div>
 
-        <div class="mb-4">
-          <label for="course-type" class="text-[20px] font-bold mb-[10px]"
+        <div class="mb-6">
+          <label for="course-type" class="text-[20px] font-bold mb-[10px] block"
             >課程類型</label
           >
-          <select
+          <AutoComplete
             v-model="courseType"
-            id="course-type"
-            class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2"
-          >
-            <option disabled value="" selected>請選擇類型</option>
-            <option v-for="type in courseTypes" :key="type" :value="type">
-              {{ type }}
-            </option>
-          </select>
+            :suggestions="filteredTypes"
+            @complete="searchTypes"
+            placeholder="請選擇或搜尋課程類型"
+            class="w-full"
+            :dropdown="true"
+            forceSelection
+          />
         </div>
 
-        <Input
-          id="course-intro"
-          v-model="courseIntro"
-          label="課程簡介"
-          placeholder="請輸入課程簡介"
-        />
+        <div class="mb-6">
+          <label for="course-type" class="text-[20px] font-bold mb-[10px] block"
+            >課程簡介</label
+          >
+          <InputText
+            id="course-intro"
+            v-model="courseIntro"
+            placeholder="請輸入課程簡介"
+            class="w-full"
+          />
+        </div>
 
-        <div class="mb-4">
-          <label for="course-outline" class="text-[20px] font-bold mb-[10px]"
+        <div class="mb-6">
+          <label
+            for="course-outline"
+            class="text-[20px] font-bold mb-[10px] block"
             >教學大綱</label
           >
-          <textarea
+          <Editor
             v-model="courseOutline"
             id="course-outline"
-            class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2"
-            placeholder="請描述課程內容與學習目標"
-            rows="5"
-          ></textarea>
+            editorStyle="height: 200px"
+            class="w-full"
+          />
         </div>
 
-        <FileUpload
-          label="課程封面圖片(可選)"
-          accept="image/*"
-          @file-selected="handleFileSelected"
-        />
+        <div class="mb-6">
+          <label for="course-type" class="text-[20px] font-bold mb-[10px] block"
+            >課程封面圖片(可選)</label
+          >
+          <FileUpload accept="image/*" @file-selected="handleFileSelected" />
+        </div>
 
-        <Input
-          id="course-price"
-          v-model="coursePrice"
-          type="number"
-          label="課程價格 (新台幣 $TWD)"
-          placeholder="請輸入課程價格"
-        />
+        <div class="mb-6">
+          <label for="course-type" class="text-[20px] font-bold mb-[10px] block"
+            >課程價格 (新台幣 $TWD)</label
+          >
+          <InputText
+            id="course-price"
+            v-model="coursePrice"
+            type="number"
+            placeholder="請輸入課程價格"
+            class="w-full"
+          />
+        </div>
 
         <Button
-          variant="primary"
-          fullWidth
+          label="提交審核"
+          class="w-[100%] mt-4"
           @click="onSubmit"
           :disabled="!isFormValid"
-        >
-          提交審核
-        </Button>
+        />
       </div>
     </div>
   </DefaultLayout>
@@ -77,11 +91,13 @@
 import axios from "axios";
 import swal from "sweetalert";
 import { computed, onMounted, ref } from "vue";
-import Button from "../components/common/Button.vue";
 import FileUpload from "../components/common/FileUpload.vue";
-import Input from "../components/common/Input.vue";
 import PageTitle from "../components/common/PageTitle.vue";
 import DefaultLayout from "../Layout/default.vue";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import AutoComplete from "primevue/autocomplete";
+import Editor from "primevue/editor";
 import { useAuthStore } from "../stores/auth";
 import { courseTypes } from "../stores/courseType";
 import { useUserStore } from "../stores/user";
@@ -94,7 +110,21 @@ const courseType = ref("");
 const courseIntro = ref("");
 const courseOutline = ref("");
 const courseImage = ref(null);
-const coursePrice = ref(null);
+const coursePrice = ref(0);
+const filteredTypes = ref([]);
+
+const convertHtmlToText = (html) => {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html;
+  return tempDiv.textContent || tempDiv.innerText || "";
+};
+
+const searchTypes = (event) => {
+  const query = event.query.toLowerCase();
+  filteredTypes.value = courseTypes.filter((type) =>
+    type.toLowerCase().includes(query)
+  );
+};
 
 const isFormValid = computed(() => {
   return (
@@ -117,11 +147,11 @@ const resetForm = () => {
   courseIntro.value = "";
   courseOutline.value = "";
   courseImage.value = null;
-  coursePrice.value = null;
+  coursePrice.value = 0;
 };
 
 const submitCourse = async () => {
-  const teacherId = userStore.userInfo.user_id;
+  const teacherId = userStore.currentUserInfo.user_id;
 
   const payload = {
     course_name: courseName.value,
@@ -164,6 +194,7 @@ const onSubmit = () => {
 };
 
 onMounted(() => {
+  authStore.checkAuth();
   userStore.fetchUser();
 });
 </script>

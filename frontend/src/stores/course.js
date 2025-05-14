@@ -5,6 +5,7 @@ export const useCourseStore = defineStore("courseStore", {
   state: () => ({
     courses: [], // 存儲課程列表
     myCourses: [], // 存儲我的課程列表
+    currentClass: "", // 該課程的課堂狀態
     loading: false, // 加載狀態
     error: null, // 錯誤訊息
   }),
@@ -36,6 +37,11 @@ export const useCourseStore = defineStore("courseStore", {
         course.students.includes(user_id)
       );
       console.log(this.myCourses);
+    },
+    saveCurrentClass(course_id) {
+      this.currentClass = this.courses.find(
+        (course) => course.course_id === course_id
+      );
     },
   },
 });

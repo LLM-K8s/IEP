@@ -14,18 +14,16 @@
           探索豐富的課程，隨時隨地學習新知識，提升自己的能力。我們提供最優質的線上教學體驗，讓學習更有效率、更有樂趣。
         </p>
         <div class="flex justify-center gap-6 mt-6">
-          <a
-            href="#features"
-            class="bg-gray-800 text-gray-100 hover:bg-gray-600 hover:text-white rounded-lg px-4 py-2 transition"
-          >
-            平台特色
-          </a>
-          <a
-            href="#hotcourse"
-            class="bg-gray-800 text-gray-100 hover:bg-gray-600 hover:text-white rounded-lg px-4 py-2 transition"
-          >
-            熱門課程
-          </a>
+          <Button
+          label="平台特色"
+          raised
+          @click="scrollToFeatures"
+          />
+          <Button
+          label="熱門課程"
+          raised
+          @click="scrollToHotCourse"
+          />
         </div>
       </div>
     </div>
@@ -33,15 +31,30 @@
 </template>
 
 <script setup>
+import Button from "primevue/button";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const heroRef = ref(null);
+
+const scrollToFeatures = () => {
+  const featuresSection = document.getElementById("features");
+  if (featuresSection) {
+    featuresSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
 const handleScroll = () => {
   if (!heroRef.value) return;
   const scrollTop = window.scrollY;
   const height = window.innerHeight;
   heroRef.value.style.opacity = `${1 - scrollTop / height}`;
+};
+
+const scrollToHotCourse = () => {
+  const hotCourseSection = document.getElementById("hotcourse");
+  if (hotCourseSection) {
+    hotCourseSection.scrollIntoView({ behavior: "smooth" });
+  }
 };
 
 onMounted(() => {

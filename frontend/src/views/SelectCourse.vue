@@ -116,14 +116,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useCourseStore } from "../stores/course";
-import { useUserStore } from "../stores/user";
-import { courseTypes } from "../stores/courseType";
-import { useAuthStore } from "../stores/auth";
-import DefaultLayout from "../Layout/default.vue";
-import CourseOutline from "../components/CourseOutline.vue";
 import axios from "axios";
+import { computed, onMounted, ref } from "vue";
+import CourseOutline from "../components/CourseOutline.vue";
+import DefaultLayout from "../Layout/default.vue";
+import { useAuthStore } from "../stores/auth";
+import { useCourseStore } from "../stores/course";
+import { courseTypes } from "../stores/courseType";
+import { useUserStore } from "../stores/user";
 
 const courseStore = useCourseStore();
 const userStore = useUserStore();
@@ -188,6 +188,7 @@ const chooseCourse = async (courseId) => {
 };
 
 onMounted(() => {
+  authStore.checkAuth();
   courseStore.fetchCourses();
   userStore.fetchUser();
 });

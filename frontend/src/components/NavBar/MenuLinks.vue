@@ -1,7 +1,10 @@
 <script setup>
-import { useAuthStore } from "@/stores/auth"; // 路徑請依實際調整
+import { useAuthStore } from "@/stores/auth";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
+import { useUserStore } from "../../stores/user";
+
+const userStore = useUserStore();
 
 const props = defineProps({ isMobile: Boolean });
 const emit = defineEmits(["itemClick"]);
@@ -10,7 +13,11 @@ const authStore = useAuthStore();
 
 const baseLinks = [
   { name: "成為老師", to: "/Teacher" },
-  { name: "我要開課", to: "/CreateCourse" },
+  {
+    name: "我要開課",
+    to: "/CreateCourse",
+    hidden: !userStore.currentUserInfo.user_is_teacher === true,
+  },
   { name: "我要選課", to: "/SelectCourse" },
   { name: "我的課程", to: "/MyCourse" },
   {
@@ -20,8 +27,9 @@ const baseLinks = [
 ];
 
 const links = computed(() => {
+  const visibleLinks = baseLinks.filter((link) => !link.hidden);
   if (authStore.isAuthenticated) {
-    return [...baseLinks, { name: "登出", action: authStore.logout }];
+    return [...visibleLinks, { name: "登出", action: authStore.logout }];
   } else {
     return [{ name: "登入", action: authStore.login }];
   }
@@ -44,7 +52,9 @@ const linkClass = computed(() => [
   "text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
   props.isMobile ? "block text-center" : "text-[16px]",
 ]);
-const containerClass = computed(() => props.isMobile ? "space-y-3" : "flex space-x-2");
+const containerClass = computed(() =>
+  props.isMobile ? "space-y-3" : "flex space-x-2"
+);
 
 function onLinkClick(link) {
   if (link.action) {

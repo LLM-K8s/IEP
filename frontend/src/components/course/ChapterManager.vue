@@ -1,6 +1,8 @@
 <template>
   <div class="mb-8 bg-white rounded-2xl shadow p-4">
-    <h2 class="text-xl font-bold text-purple-800 border-b-4 border-gray-200 pb-2 mb-4">
+    <h2
+      class="text-xl font-bold text-purple-800 border-b-4 border-gray-200 pb-2 mb-4"
+    >
       {{ chapter.title }}
       <button
         v-if="showDeleteButton"
@@ -43,7 +45,7 @@ defineProps({
   },
   showDeleteButton: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 });
 
