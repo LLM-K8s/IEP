@@ -79,11 +79,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import CourseOutline from "../components/CourseOutline.vue";
+import DefaultLayout from "../Layout/default.vue";
 import { useCourseStore } from "../stores/course";
 import { useUserStore } from "../stores/user";
-import DefaultLayout from "../Layout/default.vue";
-import CourseOutline from "../components/CourseOutline.vue";
 
 const courseStore = useCourseStore();
 const userStore = useUserStore();

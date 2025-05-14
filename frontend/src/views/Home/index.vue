@@ -3,54 +3,11 @@
     <HeroSection />
     <div class="w-[90%] mx-[5%]">
       <section id="features" class="features-section px-[64px]">
-        <FeaturesCardList>
-          <template te v-slot:featureCol1>
-            <FeaturesCard
-               ><template v-slot:icon>📚</template
-              ><template v-slot:title>豐富的課程資源</template
-              ><template v-slot:text
-                >涵蓋各種領域的優質課程，從程式設計到語言學習，應有盡有</template
-              ></FeaturesCard>
-            <FeaturesCard
-              ><template v-slot:icon>📈</template
-              ><template v-slot:title>提升學習效率</template
-              ><template v-slot:text
-                >學生可以更專注於學習和實作，減少因環境問題等造成不必要的困擾</template
-              ></FeaturesCard>
-            <FeaturesCard
-              ><template v-slot:icon>🌐</template
-              ><template v-slot:title>雲端開發</template
-              ><template v-slot:text
-                >可以透過網路在線上進行開發，並且手機、平板、電腦都可以使用</template
-              ></FeaturesCard
-            >
-          </template>
-          <template v-slot:featureCol2>
-            <FeaturesCard
-              ><template v-slot:icon>🏗️</template
-              ><template v-slot:title>客製化開發環境</template
-              ><template v-slot:text
-                >減少學生在設定環境配置上的困難，讓他們能夠更快地進入學習狀態</template
-              ></FeaturesCard
-            >
-            <FeaturesCard
-              ><template v-slot:icon>🎯</template
-              ><template v-slot:title>靈活學習</template
-              ><template v-slot:text
-                >可以在任何時間、任何地點通過網路連線至平台進行學習和實作</template
-              ></FeaturesCard
-            >
-          </template>
-        </FeaturesCardList>
+        <FeatureList />
       </section>
 
       <section id="hotcourse" class="hotcourse-section mt-[120px] px-[64px]">
-        <HotCourseLayout>
-          <HotCourse />
-          <HotCourse />
-          <HotCourse />
-          <HotCourse />
-        </HotCourseLayout>
+        <CourseList />
       </section>
     </div>
   </DefaultLayout>
@@ -58,16 +15,85 @@
 
 <script setup>
 import DefaultLayout from "../../Layout/default.vue";
-import FeaturesCard from "./Feature/FeaturesCard.vue";
-import FeaturesCardList from "./Feature/FeaturesCardList.vue";
+import FeatureList from "./Feature/FeatureList.vue";
 import HeroSection from "./HeroSection.vue";
-import HotCourse from "./HotCourse/HotCourse.vue";
-import HotCourseLayout from "./HotCourse/HotCourseLayout.vue";
+import CourseList from "./HotCourse/CourseList.vue";
 </script>
 
 <style scoped>
 .features-section,
 .hotcourse-section {
   padding: 2rem 0;
+}
+
+.feature-card {
+  transition: transform 0.2s ease-in-out;
+  height: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.course-card {
+  transition: transform 0.2s ease-in-out;
+  height: 100%;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+:deep(.p-card) {
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+:deep(.p-card-header) {
+  background-color: #f8fafc;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 0;
+}
+
+:deep(.p-card-title) {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+:deep(.p-card-subtitle) {
+  margin-bottom: 1rem;
+}
+
+:deep(.p-card-content) {
+  padding: 1.5rem;
+}
+
+:deep(.p-card-footer) {
+  padding: 1.5rem;
+  padding-top: 0;
+}
+
+:deep(.p-dialog) {
+  border-radius: 1rem;
+}
+
+:deep(.p-dialog-header) {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-color: #f8fafc;
+}
+
+:deep(.p-dialog-content) {
+  padding: 1.5rem;
+}
+
+:deep(.p-dialog-footer) {
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  background-color: #f8fafc;
+  padding: 1rem 1.5rem;
 }
 </style>
