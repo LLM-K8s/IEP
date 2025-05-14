@@ -6,7 +6,13 @@
         :showBackButton="true"
         backRoute="/MyCourse"
       />
-      <div class="flex justify-end">
+      <div
+        v-if="
+          userStore.currentUserInfo.user_id ===
+          courseStore.currentClass.teacher_id
+        "
+        class="flex justify-end"
+      >
         <Button
           @click="toggleNewChapter"
           :class="[showNewChapter ? 'mb-0 mt-2' : 'mb-5 mt-2']"
@@ -32,10 +38,18 @@
           title: week.chapter,
           items: week.items,
         }"
+        :showDeleteButton="
+          userStore.currentUserInfo.user_id ===
+          courseStore.currentClass.teacher_id
+        "
         @delete="removeChapter(index)"
         @delete-item="(itemIndex) => removeItem(index, itemIndex)"
       >
         <Button
+          v-if="
+            userStore.currentUserInfo.user_id ===
+            courseStore.currentClass.teacher_id
+          "
           @click="toggleFileEditor(index)"
           variant="success"
           size="sm"
@@ -81,8 +95,11 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
+import { useUserStore } from "../stores/user";
+import { useCourseStore } from "../stores/course";
+import { useAuthStore } from "../stores/auth";
 import swal from "sweetalert";
-import { ref } from "vue";
 import Button from "../components/common/Button.vue";
 import FileUpload from "../components/common/FileUpload.vue";
 import Input from "../components/common/Input.vue";
@@ -90,6 +107,12 @@ import PageTitle from "../components/common/PageTitle.vue";
 import ChapterManager from "../components/course/ChapterManager.vue";
 import ContentEditor from "../components/course/ContentEditor.vue";
 import DefaultLayout from "../Layout/default.vue";
+
+const userStore = useUserStore();
+const courseStore = useCourseStore();
+const authStore = useAuthStore();
+
+const courseCourseInfo = courseStore.currentClass;
 
 // 課程資料
 const assignments = ref([
@@ -190,4 +213,8 @@ const toggleReviewPanel = (index) => {
   // 處理查看檔案與評分邏輯
   console.log("查看章節:", index);
 };
+
+onMounted(() => {
+  authStore.checkAuth();
+});
 </script>
