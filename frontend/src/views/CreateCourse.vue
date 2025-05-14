@@ -4,10 +4,12 @@
       <PageTitle title="建立新課程 📚" />
 
       <div class="shadow-gray-500 rounded-[8px] w-[100%] self-center p-5">
+        <label for="course-type" class="text-[20px] font-bold mb-[10px]"
+          >課程名稱</label
+        >
         <Input
           id="course-name"
           v-model="courseName"
-          label="課程名稱"
           placeholder="請輸入課程名稱"
         />
 
@@ -27,10 +29,12 @@
           </select>
         </div>
 
+        <label for="course-type" class="text-[20px] font-bold mb-[10px]"
+            >課程簡介</label
+        >
         <Input
           id="course-intro"
           v-model="courseIntro"
-          label="課程簡介"
           placeholder="請輸入課程簡介"
         />
 
@@ -46,29 +50,30 @@
             rows="5"
           ></textarea>
         </div>
-
+        <label for="course-type" class="text-[20px] font-bold mb-[10px]"
+            >課程封面圖片(可選)</label
+          >
         <FileUpload
-          label="課程封面圖片(可選)"
           accept="image/*"
           @file-selected="handleFileSelected"
         />
 
+        <label for="course-type" class="text-[20px] font-bold mb-[10px]"
+            >課程價格 (新台幣 $TWD)</label
+          >
         <Input
           id="course-price"
           v-model="coursePrice"
           type="number"
-          label="課程價格 (新台幣 $TWD)"
           placeholder="請輸入課程價格"
         />
 
         <Button
-          variant="primary"
-          fullWidth
+          label="提交審核"
+          class= "w-[100%]"
           @click="onSubmit"
           :disabled="!isFormValid"
-        >
-          提交審核
-        </Button>
+        />
       </div>
     </div>
   </DefaultLayout>
@@ -78,11 +83,11 @@
 import axios from "axios";
 import swal from "sweetalert";
 import { computed, onMounted, ref } from "vue";
-import Button from "../components/common/Button.vue";
 import FileUpload from "../components/common/FileUpload.vue";
 import Input from "../components/common/Input.vue";
 import PageTitle from "../components/common/PageTitle.vue";
 import DefaultLayout from "../Layout/default.vue";
+import Button from "primevue/button";
 import { useAuthStore } from "../stores/auth";
 import { courseTypes } from "../stores/courseType";
 import { useUserStore } from "../stores/user";

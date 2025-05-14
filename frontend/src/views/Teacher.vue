@@ -11,7 +11,7 @@
         <label for="course-name" class="text-[20px] font-bold mb-[10px]"
           >姓名</label
         >
-        <input
+        <InputText
           id="teacher-name"
           type="text"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
@@ -20,7 +20,7 @@
         <label for="course-name" class="text-[20px] font-bold mb-[10px]"
           >身分證號</label
         >
-        <input
+        <InputText
           id="teacher-id"
           type="password"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
@@ -30,7 +30,7 @@
         <label for="course-name" class="text-[20px] font-bold mb-[10px]"
           >E-Mail</label
         >
-        <input
+        <InputText
           id="teacher-email"
           type="text"
           class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
@@ -39,13 +39,11 @@
         <label for="course-outline" class="text-[20px] font-bold mb-[10px]"
           >自我介紹</label
         >
-        <textarea
-          id="about-me"
-          type="text"
-          class="bg-white shadow-2xs shadow-gray-500 text-[16px] w-full border-1 border-solid border-[#ddd] rounded-[8px] p-2 mb-4"
-          placeholder="請介紹自己的背景與經歷"
-          rows="5"
-        ></textarea>
+        <Editor
+          v-model="aboutMe"
+          editorStyle="height: 200px"
+          class="mb-4"
+        />
         <label for="course-outline" class="text-[20px] font-bold mb-[10px]"
           >授課類型</label
         >
@@ -64,7 +62,7 @@
           </span>
 
           <!-- 輸入框 -->
-          <input
+          <InputText
             ref="input"
             v-model="inputTagValue"
             @keydown.enter="addTag"
@@ -73,23 +71,26 @@
             placeholder="輸入類型標籤後按 Enter 新增"
           />
         </div>
-        <button
-          class="bg-[#3498db] text-white w-[100%] rounded-lg p-2 mt-[16px] hover:bg-[#2d83bc]"
-        >
-          提交申請審核
-        </button>
+        <Button
+          label="提交申請審核"
+          class= "w-[100%]"
+        />
       </div>
     </div>
   </DefaultLayout>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import Button from "primevue/button";
+import Editor from "primevue/editor";
+import InputText from "primevue/inputtext";
+import { ref } from "vue";
 import DefaultLayout from "../Layout/default.vue";
 
 const tags = ref([]);
 const inputTagValue = ref("");
 const inputTag = ref(null);
+const aboutMe = ref("");
 
 const addTag = () => {
   const tag = inputTagValue.value.trim();
@@ -115,10 +116,3 @@ const focusInput = () => {
 
 const password = ref("");
 </script>
-
-<style scoped>
-.Teacher {
-  background-image: url("../assets/images/email-pattern.png");
-  height: 100vh;
-}
-</style>

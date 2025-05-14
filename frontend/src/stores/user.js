@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import axios from "axios";
+import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
@@ -14,8 +14,8 @@ export const useUserStore = defineStore("userStore", {
       this.error = null;
       this.authInfo = JSON.parse(
         localStorage.getItem(
-          "oidc.user:http://172.16.1.16:8081/realms/coder:vue"
-        )
+          "oidc.user:http://172.16.1.16:8081/realms/coder:vue",
+        ),
       );
       try {
         const response = await axios.get("http://localhost:8000/api/users/", {
@@ -36,7 +36,7 @@ export const useUserStore = defineStore("userStore", {
             headers: {
               Authorization: `Bearer ${this.authInfo.access_token}`,
             },
-          }
+          },
         );
         this.currentUserInfo = response.data;
       } catch (error) {
