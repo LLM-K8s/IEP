@@ -121,7 +121,7 @@ const resetForm = () => {
 };
 
 const submitCourse = async () => {
-  const teacherId = userStore.userInfo.user_id;
+  const teacherId = userStore.currentUserInfo.user_id;
 
   const payload = {
     course_name: courseName.value,
