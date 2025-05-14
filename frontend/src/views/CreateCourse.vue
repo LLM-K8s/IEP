@@ -43,7 +43,9 @@
         </div>
 
         <div class="mb-6">
-          <label for="course-outline" class="text-[20px] font-bold mb-[10px] block"
+          <label
+            for="course-outline"
+            class="text-[20px] font-bold mb-[10px] block"
             >教學大綱</label
           >
           <Editor
@@ -58,10 +60,7 @@
           <label for="course-type" class="text-[20px] font-bold mb-[10px] block"
             >課程封面圖片(可選)</label
           >
-          <FileUpload
-            accept="image/*"
-            @file-selected="handleFileSelected"
-          />
+          <FileUpload accept="image/*" @file-selected="handleFileSelected" />
         </div>
 
         <div class="mb-6">
@@ -97,7 +96,7 @@ import PageTitle from "../components/common/PageTitle.vue";
 import DefaultLayout from "../Layout/default.vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import AutoComplete from 'primevue/autocomplete';
+import AutoComplete from "primevue/autocomplete";
 import Editor from "primevue/editor";
 import { useAuthStore } from "../stores/auth";
 import { courseTypes } from "../stores/courseType";
@@ -115,14 +114,14 @@ const coursePrice = ref(0);
 const filteredTypes = ref([]);
 
 const convertHtmlToText = (html) => {
-  const tempDiv = document.createElement('div');
+  const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
-  return tempDiv.textContent || tempDiv.innerText || '';
+  return tempDiv.textContent || tempDiv.innerText || "";
 };
 
 const searchTypes = (event) => {
   const query = event.query.toLowerCase();
-  filteredTypes.value = courseTypes.filter(type =>
+  filteredTypes.value = courseTypes.filter((type) =>
     type.toLowerCase().includes(query)
   );
 };
@@ -195,6 +194,7 @@ const onSubmit = () => {
 };
 
 onMounted(() => {
+  authStore.checkAuth();
   userStore.fetchUser();
 });
 </script>

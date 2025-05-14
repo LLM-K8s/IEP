@@ -34,6 +34,7 @@
             </p>
             <router-link
               to="/Class"
+              @click="moved_class(course.course_id)"
               class="bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2 inline-block"
               >進入課程</router-link
             >
@@ -79,19 +80,26 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 import CourseOutline from "../components/CourseOutline.vue";
 import DefaultLayout from "../Layout/default.vue";
 import { useCourseStore } from "../stores/course";
 import { useUserStore } from "../stores/user";
+import { useAuthStore } from "../stores/auth";
 
 const courseStore = useCourseStore();
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const showOutline = ref(false);
 const checkCourse = ref("");
 
+const moved_class = (course_id) => {
+  courseStore.saveCurrentClass(course_id);
+};
+
 onMounted(async () => {
+  authStore.checkAuth();
   await userStore.fetchUser();
   await courseStore.fetchCourses();
   const userId = userStore.currentUserInfo.user_id;
