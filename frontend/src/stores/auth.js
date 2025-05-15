@@ -58,13 +58,28 @@ export const useAuthStore = defineStore("auth", () => {
 
   const checkAuth = async () => {
     try {
+      // 先檢查本地認證狀態
       const isAuth = await authService.isAuthenticated();
       const user = isAuth ? await authService.getUser() : null;
       setAuthState(user);
-      return isAuth;
+      if (!isAuth) {
+        return false;
+      }
+
+      // 再向後端驗證權限
+      await axios.get("http://localhost:8000/api/me/", {
+        headers: {
+          Authorization: `Bearer ${user.access_token}`,
+        },
+      });
+      return true;
     } catch (error) {
-      console.error("檢查認證狀態失敗:", error);
-      setAuthState();
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        await logout();
+      }
       return false;
     }
   };

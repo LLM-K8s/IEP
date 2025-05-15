@@ -137,11 +137,13 @@ const defaultImage = "../assets/images/default-course.png";
 
 const filteredCourses = computed(() => {
   return courseStore.courses.filter((course) => {
-    const matchesQuery = !searchQuery.value
-      || course.course_name
+    const matchesQuery =
+      !searchQuery.value ||
+      course.course_name
         .toLowerCase()
         .includes(searchQuery.value.toLowerCase());
-    const matchesType = !selectedType.value || course.course_type === selectedType.value;
+    const matchesType =
+      !selectedType.value || course.course_type === selectedType.value;
     return matchesQuery && matchesType;
   });
 });
@@ -149,7 +151,7 @@ const filteredCourses = computed(() => {
 const chooseCourse = async (courseId) => {
   console.log("選擇的課程ID:", courseId);
   const selectedCourse = courseStore.courses.find(
-    (course) => course.course_id === courseId,
+    (course) => course.course_id === courseId
   );
   if (selectedCourse.course_price === 0) {
     console.log("免費課程");
@@ -169,7 +171,7 @@ const chooseCourse = async (courseId) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authStore.currentUser.access_token}`,
           },
-        },
+        }
       );
       swal("選擇成功！", "已將課程新增至您的課程清單", "success");
       showDetails.value = false;
@@ -186,6 +188,7 @@ const chooseCourse = async (courseId) => {
 };
 
 onMounted(() => {
+  authStore.checkAuth();
   courseStore.fetchCourses();
   userStore.fetchUser();
 });

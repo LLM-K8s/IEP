@@ -43,7 +43,9 @@
         </div>
 
         <div class="mb-6">
-          <label for="course-outline" class="text-[20px] font-bold mb-[10px] block"
+          <label
+            for="course-outline"
+            class="text-[20px] font-bold mb-[10px] block"
             >教學大綱</label
           >
           <Editor
@@ -167,14 +169,14 @@ const uploadedFiles = ref([]);
 const previewFiles = ref([]);
 
 const convertHtmlToText = (html) => {
-  const tempDiv = document.createElement('div');
+  const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
-  return tempDiv.textContent || tempDiv.innerText || '';
+  return tempDiv.textContent || tempDiv.innerText || "";
 };
 
 const searchTypes = (event) => {
   const query = event.query.toLowerCase();
-  filteredTypes.value = courseTypes.filter(type =>
+  filteredTypes.value = courseTypes.filter((type) =>
     type.toLowerCase().includes(query)
   );
 };
@@ -294,6 +296,7 @@ const onRemoveTemplatingFile = (file, removeFileCallback, index) => {
 };
 
 onMounted(() => {
+  authStore.checkAuth();
   userStore.fetchUser();
 });
 </script>

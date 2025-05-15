@@ -10,15 +10,19 @@ class ChapterFile(Model):
     filename: str
     url: str
 
+
 # 章節
 class Chapter(Model):
     chapter_id: Optional[ObjectId] = None
     chapter_name: str
     chapter_file: List[ChapterFile]  # 章節文件列表
 
+
 # 課程
 class Course(Model):
-    course_id: Optional[ObjectId] = Field(primary_field=True, default_factory=ObjectId)  # 自動生成隨機 ID  # noqa: E501
+    course_id: Optional[ObjectId] = Field(
+        primary_field=True, default_factory=ObjectId
+    )  # 自動生成隨機 ID  # noqa: E501
     course_name: str
     course_type: str
     course_intro: str
@@ -26,7 +30,9 @@ class Course(Model):
     course_image: str
     course_price: int
     course_content: List[Chapter]
-    create_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))  # UTC  # noqa: E501
+    create_at: datetime = Field(
+        default_factory=lambda: datetime.utcnow().astimezone(tz=None)
+    )  # UTC  # noqa: E501
     last_at: datetime = Field(default_factory=lambda: datetime.utcnow().astimezone(tz=None))
     teacher_id: Optional[ObjectId]
     students: List[ObjectId]

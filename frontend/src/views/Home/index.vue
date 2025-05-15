@@ -14,10 +14,18 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth";
 import DefaultLayout from "../../Layout/default.vue";
 import FeatureList from "./Feature/FeatureList.vue";
 import HeroSection from "./HeroSection.vue";
 import CourseList from "./HotCourse/CourseList.vue";
+
+const authStore = useAuthStore();
+
+onMounted(() => {
+  authStore.checkAuth();
+});
 </script>
 
 <style scoped>
