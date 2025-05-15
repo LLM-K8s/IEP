@@ -73,7 +73,9 @@
             class="w-full"
           >
             <template #header="{ chooseCallback, clearCallback, files }">
-              <div class="flex flex-wrap justify-between items-center flex-1 gap-4">
+              <div
+                class="flex flex-wrap justify-between items-center flex-1 gap-4"
+              >
                 <div class="flex gap-2">
                   <Button
                     @click="chooseCallback()"
@@ -84,29 +86,77 @@
                     :disabled="previewFiles.length > 0"
                   ></Button>
                 </div>
-                <small v-if="previewFiles.length > 0" class="text-gray-500">已上傳一張圖片，請先移除現有圖片才能上傳新圖片</small>
+                <small v-if="previewFiles.length > 0" class="text-gray-500"
+                  >已上傳一張圖片，請先移除現有圖片才能上傳新圖片</small
+                >
               </div>
             </template>
-            <template #content="{ files, uploadedFiles, removeUploadedFileCallback, removeFileCallback, messages }">
+            <template
+              #content="{
+                files,
+                uploadedFiles,
+                removeUploadedFileCallback,
+                removeFileCallback,
+                messages,
+              }"
+            >
               <div class="flex flex-col gap-8 pt-4">
-                <Message v-for="message of messages" :key="message" :class="{ 'mb-8': !files.length && !uploadedFiles.length}" severity="error">
+                <Message
+                  v-for="message of messages"
+                  :key="message"
+                  :class="{ 'mb-8': !files.length && !uploadedFiles.length }"
+                  severity="error"
+                >
                   {{ message }}
                 </Message>
 
-                <div v-if="previewFiles.length > 0" class="flex flex-wrap gap-4">
-                  <div v-for="(file, index) of previewFiles" :key="file.name + file.type + file.size" class="p-4 rounded-border flex flex-col border border-surface items-center gap-4">
+                <div
+                  v-if="previewFiles.length > 0"
+                  class="flex flex-wrap gap-4"
+                >
+                  <div
+                    v-for="(file, index) of previewFiles"
+                    :key="file.name + file.type + file.size"
+                    class="p-4 rounded-border flex flex-col border border-surface items-center gap-4"
+                  >
                     <div class="w-[200px] h-[150px] overflow-hidden">
-                      <img role="presentation" :alt="file.name" :src="file.objectURL" class="w-full h-full object-cover" />
+                      <img
+                        role="presentation"
+                        :alt="file.name"
+                        :src="file.objectURL"
+                        class="w-full h-full object-cover"
+                      />
                     </div>
-                    <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                    <Badge :value="uploadedFiles.includes(file) ? '已上傳' : '待上傳'" :severity="uploadedFiles.includes(file) ? 'success' : 'warn'" />
-                    <Button icon="pi pi-times" @click="onRemoveTemplatingFile(file, removeFileCallback, index)" outlined rounded severity="danger" />
+                    <span
+                      class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden"
+                      >{{ file.name }}</span
+                    >
+                    <Badge
+                      :value="
+                        uploadedFiles.includes(file) ? '已上傳' : '待上傳'
+                      "
+                      :severity="
+                        uploadedFiles.includes(file) ? 'success' : 'warn'
+                      "
+                    />
+                    <Button
+                      icon="pi pi-times"
+                      @click="
+                        onRemoveTemplatingFile(file, removeFileCallback, index)
+                      "
+                      outlined
+                      rounded
+                      severity="danger"
+                    />
                   </div>
                 </div>
               </div>
             </template>
             <template #empty>
-              <div v-if="previewFiles.length === 0" class="flex items-center justify-center flex-col p-8 border-2 border-dashed border-gray-300 rounded-lg">
+              <div
+                v-if="previewFiles.length === 0"
+                class="flex items-center justify-center flex-col p-8 border-2 border-dashed border-gray-300 rounded-lg"
+              >
                 <i class="pi pi-cloud-upload !text-4xl !text-gray-400 mb-4" />
                 <p class="text-gray-500">拖放圖片到這裡上傳</p>
               </div>
@@ -146,11 +196,11 @@ import PageTitle from "../components/common/PageTitle.vue";
 import DefaultLayout from "../Layout/default.vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import AutoComplete from 'primevue/autocomplete';
+import AutoComplete from "primevue/autocomplete";
 import FileUpload from "primevue/fileupload";
 import Editor from "primevue/editor";
-import Message from 'primevue/message';
-import Badge from 'primevue/badge';
+import Message from "primevue/message";
+import Badge from "primevue/badge";
 import { useAuthStore } from "../stores/auth";
 import { courseTypes } from "../stores/courseType";
 import { useUserStore } from "../stores/user";
@@ -254,10 +304,12 @@ const onTemplatedUpload = (event) => {
     const file = files[0];
     courseImage.value = file;
     const objectURL = URL.createObjectURL(file);
-    uploadedFiles.value = [{
-      ...file,
-      objectURL
-    }];
+    uploadedFiles.value = [
+      {
+        ...file,
+        objectURL,
+      },
+    ];
     previewFiles.value = uploadedFiles.value;
   }
 };
@@ -270,7 +322,7 @@ const onSelectedFiles = (event) => {
       const objectURL = URL.createObjectURL(file);
       courseImage.value = {
         ...file,
-        objectURL
+        objectURL,
       };
       previewFiles.value = [courseImage.value];
     }
@@ -278,11 +330,11 @@ const onSelectedFiles = (event) => {
 };
 
 const formatSize = (bytes) => {
-  if (bytes === 0) return '0 B';
+  if (bytes === 0) return "0 B";
   const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const sizes = ["B", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 };
 
 const onRemoveTemplatingFile = (file, removeFileCallback, index) => {
