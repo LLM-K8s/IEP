@@ -2,7 +2,11 @@
   <Card class="course-card">
     <template #header>
       <div class="h-[200px] bg-gray-100 flex items-center justify-center">
-        <img :src="course.image" :alt="course.title" class="w-full h-full object-cover" />
+        <img
+          :src="course.image"
+          :alt="course.title"
+          class="w-full h-full object-cover"
+        />
       </div>
     </template>
     <template #title>{{ course.title }}</template>
@@ -16,7 +20,11 @@
       <p class="text-gray-600 mb-4">{{ course.description }}</p>
     </template>
     <template #footer>
-      <Button label="查看詳情" class="w-full" @click="$emit('show-details', course.id)" />
+      <Button
+        label="查看詳情"
+        class="w-full"
+        @click="$emit('show-details', course.id)"
+      />
     </template>
   </Card>
 </template>

@@ -13,13 +13,24 @@
     </div>
 
     <Dialog
-      v-model:visible="showDetails"
+      :visible="showDetails"
       modal
       header="課程大綱"
       :style="{ width: '90vw', maxWidth: '600px' }"
+      :closable="false"
     >
-      <div class="overflow-y-auto max-h-[300px] text-gray-600 border border-gray-200 rounded-lg p-4">
+      <div
+        class="overflow-y-auto max-h-[300px] text-gray-600 border border-gray-200 rounded-lg p-4"
+      >
         <p>{{ selectedCourseDetails }}</p>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <Button
+          type="button"
+          label="關閉"
+          severity="secondary"
+          @click="showDetails = false"
+        ></Button>
       </div>
     </Dialog>
   </div>
@@ -28,7 +39,8 @@
 <script setup>
 import Dialog from "primevue/dialog";
 import { ref } from "vue";
-import CourseCard from "./CourseCard.vue";
+import CourseCard from "./HotCourseCard.vue";
+import Button from "primevue/button";
 
 const showDetails = ref(false);
 const selectedCourseDetails = ref("");

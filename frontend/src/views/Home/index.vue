@@ -7,7 +7,7 @@
       </section>
 
       <section id="hotcourse" class="hotcourse-section mt-[120px] px-[64px]">
-        <CourseList />
+        <HotCourseList />
       </section>
     </div>
   </DefaultLayout>
@@ -19,7 +19,7 @@ import { useAuthStore } from "@/stores/auth";
 import DefaultLayout from "../../Layout/default.vue";
 import FeatureList from "./Feature/FeatureList.vue";
 import HeroSection from "./HeroSection.vue";
-import CourseList from "./HotCourse/CourseList.vue";
+import HotCourseList from "./HotCourse/HotCourseList.vue";
 
 const authStore = useAuthStore();
 
