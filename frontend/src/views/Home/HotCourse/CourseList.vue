@@ -1,9 +1,8 @@
 <template>
-  <div class="max-w-7xl mx-auto">
-    <p class="text-gray-800 text-[24px] text-center mt-[120px] font-bold">
-      熱門課程
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p class="text-gray-800 text-[32px] text-center mt-[120px] font-bold mb-8">
+      平台特色
     </p>
-    <hr class="my-4 border-2 border-gray-500 rounded-2xl" />
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <CourseCard
         v-for="course in courses"
