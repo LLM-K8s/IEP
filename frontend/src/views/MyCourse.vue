@@ -1,12 +1,7 @@
 <template>
   <DefaultLayout>
     <div class="w-[90%] mx-[5%]">
-      <div class="pt-20 w-[100%]">
-        <span class="text-[24px] mt-20 mb-[16px] font-bold h-fit">
-          我的課程
-        </span>
-        <hr class="border-2 border-gray-500 rounded-2xl" />
-      </div>
+      <PageTitle title="我的課程" />
       <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-5">
         <div
           v-for="course in courseStore.myCourses"
@@ -48,44 +43,16 @@
         </div>
       </div>
     </div>
-    <div
-      v-if="showOutline"
-      class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800/50"
-    >
-      <CourseOutline>
-        <template v-slot:Outline>
-          <textarea
-            v-model="
-              courseStore.courses.find(
-                (course) => course.course_id === checkCourse
-              ).course_outline
-            "
-            class="w-full h-[300px] border-3 border-[#5e5e5e] rounded-lg p-4"
-            readonly
-          ></textarea>
-        </template>
-        <template v-slot:Button>
-          <div class="flex justify-center">
-            <button
-              @click="showOutline = false"
-              class="mt-4 bg-[#e74c3c] hover:bg-[#c0392b] text-white rounded-lg p-2 w-full"
-            >
-              關閉
-            </button>
-          </div>
-        </template>
-      </CourseOutline>
-    </div>
   </DefaultLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import CourseOutline from "../components/CourseOutline.vue";
-import DefaultLayout from "../Layout/default.vue";
 import { useCourseStore } from "../stores/course";
 import { useUserStore } from "../stores/user";
 import { useAuthStore } from "../stores/auth";
+import DefaultLayout from "../Layout/default.vue";
+import PageTitle from "../components/common/PageTitle.vue";
 
 const courseStore = useCourseStore();
 const userStore = useUserStore();
