@@ -48,7 +48,7 @@ function linkProps(link) {
 }
 
 const linkClass = computed(() => [
-  "text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
+  "text-gray-800 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
   props.isMobile ? "block text-center" : "text-[16px]",
 ]);
 const containerClass = computed(() =>
