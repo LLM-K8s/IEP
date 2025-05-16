@@ -1,9 +1,8 @@
 <template>
-  <div class="max-w-7xl mx-auto">
-    <p class="text-gray-800 text-[24px] text-center mt-[120px] font-bold">
-      熱門課程
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p class="text-gray-800 text-[32px] text-center mt-[120px] font-bold mb-8">
+      平台特色
     </p>
-    <hr class="my-4 border-2 border-gray-500 rounded-2xl" />
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <CourseCard
         v-for="course in courses"
@@ -14,13 +13,24 @@
     </div>
 
     <Dialog
-      v-model:visible="showDetails"
+      :visible="showDetails"
       modal
       header="課程大綱"
       :style="{ width: '90vw', maxWidth: '600px' }"
+      :closable="false"
     >
-      <div class="overflow-y-auto max-h-[300px] text-gray-600 border border-gray-200 rounded-lg p-4">
+      <div
+        class="overflow-y-auto max-h-[300px] text-gray-600 border border-gray-200 rounded-lg p-4"
+      >
         <p>{{ selectedCourseDetails }}</p>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <Button
+          type="button"
+          label="關閉"
+          severity="secondary"
+          @click="showDetails = false"
+        ></Button>
       </div>
     </Dialog>
   </div>
@@ -29,7 +39,8 @@
 <script setup>
 import Dialog from "primevue/dialog";
 import { ref } from "vue";
-import CourseCard from "./CourseCard.vue";
+import CourseCard from "./HotCourseCard.vue";
+import Button from "primevue/button";
 
 const showDetails = ref(false);
 const selectedCourseDetails = ref("");

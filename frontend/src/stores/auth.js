@@ -2,6 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { authService } from "../services/auth";
+import swal from "sweetalert";
 
 export const useAuthStore = defineStore("auth", () => {
   // 狀態
@@ -79,6 +80,12 @@ export const useAuthStore = defineStore("auth", () => {
         (error.response.status === 401 || error.response.status === 403)
       ) {
         await logout();
+        swal({
+          title: "系統自動登出",
+          text: "您的登入已過期，請重新登入",
+          icon: "warning",
+          button: "OK",
+        });
       }
       return false;
     }

@@ -1,18 +1,18 @@
 <template>
-  <Card class="feature-card">
-    <template #header>
-      <div class="text-4xl text-center py-4">{{ feature.icon }}</div>
-    </template>
-    <template #title>{{ feature.title }}</template>
-    <template #content>
-      <p class="text-gray-600">{{ feature.description }}</p>
-    </template>
-  </Card>
+  <div class="h-full p-6 flex flex-col">
+    <div class="text-5xl mb-4">{{ feature.icon }}</div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-3">{{ feature.title }}</h3>
+    <p class="text-gray-600 flex-grow">{{ feature.description }}</p>
+    <div v-if="feature.highlight" class="mt-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/50 text-gray-700">
+        <span class="w-2 h-2 mr-2 rounded-full bg-blue-500 animate-pulse"></span>
+        熱門功能
+      </span>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import Card from "primevue/card";
-
 defineProps({
   feature: {
     type: Object,
@@ -21,42 +21,23 @@ defineProps({
       icon: "",
       title: "",
       description: "",
+      highlight: false,
     }),
   },
 });
 </script>
 
 <style scoped>
-.feature-card {
-  transition: transform 0.2s ease-in-out;
-  height: 100%;
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
-}
-
-:deep(.p-card) {
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
-:deep(.p-card-header) {
-  background-color: #f8fafc;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  padding: 0;
-}
-
-:deep(.p-card-title) {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e293b;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-:deep(.p-card-content) {
-  padding: 1.5rem;
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 </style>

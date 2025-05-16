@@ -4,19 +4,18 @@ import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { useUserStore } from "../../stores/user";
 
-const userStore = useUserStore();
-
 const props = defineProps({ isMobile: Boolean });
 const emit = defineEmits(["itemClick"]);
 
 const authStore = useAuthStore();
+const userStore = useUserStore();
 
-const baseLinks = [
+const baseLinks = computed(() => [
   { name: "成為老師", to: "/Teacher" },
   {
     name: "我要開課",
     to: "/CreateCourse",
-    hidden: !userStore.currentUserInfo.user_is_teacher === true,
+    hidden: !userStore.currentUserInfo.user_is_teacher,
   },
   { name: "我要選課", to: "/SelectCourse" },
   { name: "我的課程", to: "/MyCourse" },
@@ -24,10 +23,10 @@ const baseLinks = [
     name: "雲端開發平台",
     to: "https://coder.yang-lin.dev/api/v2/users/oidc/callback",
   },
-];
+]);
 
 const links = computed(() => {
-  const visibleLinks = baseLinks.filter((link) => !link.hidden);
+  const visibleLinks = baseLinks.value.filter((link) => !link.hidden);
   if (authStore.isAuthenticated) {
     return [...visibleLinks, { name: "登出", action: authStore.logout }];
   } else {
@@ -49,7 +48,7 @@ function linkProps(link) {
 }
 
 const linkClass = computed(() => [
-  "text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
+  "text-gray-800 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
   props.isMobile ? "block text-center" : "text-[16px]",
 ]);
 const containerClass = computed(() =>

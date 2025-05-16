@@ -7,7 +7,7 @@
       </section>
 
       <section id="hotcourse" class="hotcourse-section mt-[120px] px-[64px]">
-        <CourseList />
+        <HotCourseList />
       </section>
     </div>
   </DefaultLayout>
@@ -16,15 +16,18 @@
 <script setup>
 import { onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useUserStore } from "@/stores/user";
 import DefaultLayout from "../../Layout/default.vue";
 import FeatureList from "./Feature/FeatureList.vue";
 import HeroSection from "./HeroSection.vue";
-import CourseList from "./HotCourse/CourseList.vue";
+import HotCourseList from "./HotCourse/HotCourseList.vue";
 
 const authStore = useAuthStore();
+const userStore = useUserStore();
 
 onMounted(() => {
   authStore.checkAuth();
+  userStore.fetchUser();
 });
 </script>
 
