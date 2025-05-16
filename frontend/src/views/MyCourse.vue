@@ -2,74 +2,64 @@
   <DefaultLayout>
     <div class="w-[90%] mx-[5%]">
       <PageTitle title="我的課程" />
-      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-5">
-        <div
-          v-for="course in courseStore.myCourses"
-          :key="course.course_id"
-          class="border-1 border-[#ddd] border-solid rounded-[8px] shadow-md shadow-gray-500 overflow-hidden"
-        >
-          <div class="h-[150px] bg-[#eee]">
-            <img alt="課程圖片" />
-          </div>
-          <div class="p-[15px] bg-white">
-            <p class="text-[20px] font-bold">{{ course.course_name }}</p>
-            <div class="flex justify-between text-[#666] text-[16px] mt-2">
-              <span>
-                講師:
-                {{
-                  userStore.allUsersInfo.find(
-                    (user) => user.user_id === course.teacher_id
-                  )?.user_name || "未知的講師"
-                }}
-              </span>
-              <span>上次進入:</span>
-            </div>
-            <p class="text-[#666] text-[16px] mt-2 mb-4">
-              課程簡介: {{ course.course_intro }}
-            </p>
-            <router-link
-              to="/Class"
-              @click="moved_class(course.course_id)"
-              class="bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2 inline-block"
-              >進入課程</router-link
-            >
-            <button
-              @click="(showOutline = true), (checkCourse = course.course_id)"
-              class="bg-[#3498db] hover:bg-[#2d83bc] text-white rounded-lg p-2 ml-5"
-            >
-              查看課程大綱
-            </button>
-          </div>
-        </div>
-      </div>
+      <SelectButton
+        v-model="selectValue"
+        :options="switchOptions"
+        class="mt-2"
+      />
+      <CourseCardList
+        :courses="filteredCourses"
+        :selectMode="false"
+        :loading="loading"
+        @movedClass="moved_class"
+      />
     </div>
   </DefaultLayout>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useCourseStore } from "../stores/course";
 import { useUserStore } from "../stores/user";
 import { useAuthStore } from "../stores/auth";
 import DefaultLayout from "../Layout/default.vue";
 import PageTitle from "../components/common/PageTitle.vue";
+import CourseCardList from "../components/course/CourseCardList.vue";
+import SelectButton from "primevue/selectbutton";
 
 const courseStore = useCourseStore();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const showOutline = ref(false);
-const checkCourse = ref("");
+const selectValue = ref("全部課程");
+const switchOptions = ["全部課程", "我開設的課程"];
+
+const loading = ref(true);
 
 const moved_class = (course_id) => {
   courseStore.saveCurrentClass(course_id);
+  console.log(courseStore.currentClass);
 };
+
+const filteredCourses = computed(() => {
+  loading.value = true;
+  console.log(selectValue.value);
+  if (selectValue.value === "我開設的課程") {
+    loading.value = false;
+    return courseStore.myCourses.filter(
+      (course) => course.teacher_id === userStore.currentUserInfo.user_id
+    );
+  }
+  loading.value = false;
+  return courseStore.myCourses;
+});
 
 onMounted(async () => {
   authStore.checkAuth();
   await userStore.fetchUser();
   await courseStore.fetchCourses();
   const userId = userStore.currentUserInfo.user_id;
-  courseStore.getMyCourses(userId);
+  await courseStore.getMyCourses(userId);
+  loading.value = false;
 });
 </script>

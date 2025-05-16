@@ -25,6 +25,7 @@
       <CourseCardList
         :courses="filteredCourses"
         :selectMode="true"
+        :loading="loading"
         @select-course="chooseCourse"
       />
     </div>
@@ -51,8 +52,10 @@ const authStore = useAuthStore();
 
 const searchQuery = ref("");
 const selectedType = ref("");
+const loading = ref(true);
 
 const filteredCourses = computed(() => {
+  loading.value = true;
   return courseStore.courses.filter((course) => {
     const matchesQuery =
       !searchQuery.value ||
@@ -61,6 +64,7 @@ const filteredCourses = computed(() => {
         .includes(searchQuery.value.toLowerCase());
     const matchesType =
       !selectedType.value || course.course_type === selectedType.value;
+    loading.value = false;
     return matchesQuery && matchesType;
   });
 });
@@ -103,10 +107,11 @@ const chooseCourse = async (courseId) => {
   courseStore.fetchCourses();
 };
 
-onMounted(() => {
+onMounted(async () => {
   authStore.checkAuth();
-  courseStore.fetchCourses();
-  userStore.fetchUser();
+  await courseStore.fetchCourses();
+  await userStore.fetchUser();
+  loading.value = false;
 });
 </script>
 

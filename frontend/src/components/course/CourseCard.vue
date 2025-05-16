@@ -27,7 +27,7 @@
             )?.user_name || "未知的講師"
           }}
         </span>
-        <Rating :model-value="course.rating" readonly />
+        <Rating v-if="selectMode" :model-value="course.rating" readonly />
       </div>
     </template>
     <template #content>
@@ -35,6 +35,7 @@
     </template>
     <template #footer>
       <Button
+        v-if="selectMode"
         :label="
           course.students.includes(userStore.currentUserInfo.user_id)
             ? '已加入課程'
@@ -44,18 +45,38 @@
         @click="$emit('show-details', course.course_id)"
         :disabled="course.students.includes(userStore.currentUserInfo.user_id)"
       />
-      <span class="float-right">NT$ {{ course.course_price }}</span>
+      <div class="flex justify-between gap-4">
+        <Button
+          v-if="!selectMode"
+          label="進入課程"
+          @click="
+            $emit('moved-class', course.course_id),
+              $router.push({ name: 'Class' })
+          "
+          class="w-1/2"
+        />
+        <Button
+          v-if="!selectMode"
+          label="查看課程大綱"
+          @click="$emit('show-details', course.course_id)"
+          class="w-1/2"
+        />
+      </div>
+      <span v-if="selectMode" class="float-right"
+        >NT$ {{ course.course_price }}</span
+      >
     </template>
   </Card>
 </template>
 
 <script setup>
+import { useUserStore } from "@/stores/user";
 import Button from "primevue/button";
 import Card from "primevue/card";
 import Rating from "primevue/rating";
-import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
+
 const defaultImage = "../assets/images/default-course.png";
 
 defineProps({
@@ -75,9 +96,13 @@ defineProps({
       rating: 0,
     }),
   },
+  selectMode: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-defineEmits(["show-details"]);
+defineEmits(["show-details", "moved-class"]);
 </script>
 
 <style scoped>

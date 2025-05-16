@@ -1,11 +1,20 @@
 <template>
   <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-5">
-    <CourseCard
-      v-for="course in courses"
-      :key="course.course_id"
-      :course="course"
-      @show-details="showCourseDetails"
-    />
+    <template v-if="loading">
+      <div v-for="n in 3" :key="n" class="p-2">
+        <Skeleton height="400px" class="mb-2" />
+      </div>
+    </template>
+    <template v-else>
+      <CourseCard
+        v-for="course in courses"
+        :key="course.course_id"
+        :course="course"
+        :selectMode="selectMode"
+        @show-details="showCourseDetails"
+        @moved-class="movedClass"
+      />
+    </template>
     <Dialog
       :visible="showDetails"
       modal
@@ -43,8 +52,10 @@
 
 <script setup>
 import { ref } from "vue";
+import { useCourseStore } from "@/stores/course";
 import CourseCard from "./CourseCard.vue";
 import Button from "primevue/button";
+import Skeleton from "primevue/skeleton";
 
 const props = defineProps({
   courses: {
@@ -55,9 +66,15 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 defineEmits(["select-course"]);
+
+const courseStore = useCourseStore();
 
 const showDetails = ref(false);
 const selectedCourseDetails = ref([]);
@@ -68,5 +85,10 @@ const showCourseDetails = (courseId) => {
     (course) => course.course_id === courseId
   );
   showDetails.value = true;
+};
+
+const movedClass = (course_id) => {
+  courseStore.saveCurrentClass(course_id);
+  console.log(courseStore.currentClass);
 };
 </script>
