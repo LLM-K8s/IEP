@@ -55,6 +55,7 @@ const filteredCourses = computed(() => {
 });
 
 onMounted(async () => {
+  loading.value = true;
   authStore.checkAuth();
   await userStore.fetchUser();
   await courseStore.fetchCourses();
