@@ -11,11 +11,13 @@ from infrastructure.mongodb import get_engine
 
 router = APIRouter()
 
+
 async def get_course_service(request: Request) -> CourseService:
     engine = get_engine(request.app)
     return CourseService(engine)
 
-@router.post("/courses/", response_model=Course)
+
+@router.post('/courses/', response_model=Course)
 async def create_course(
     course: Course,
     service: CourseService = Depends(get_course_service),
@@ -28,7 +30,8 @@ async def create_course(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/courses/", response_model=List[GetCourseDTO])
+
+@router.get('/courses/', response_model=List[GetCourseDTO])
 async def list_course(
     service: CourseService = Depends(get_course_service),
     current_user: dict = Depends(get_current_user),
@@ -44,12 +47,13 @@ async def list_course(
             course_price=course.course_price,
             course_image=course.course_image,
             teacher_id=str(course.teacher_id),
-            students=str(course.students)
+            students=str(course.students),
         )
         for course in courses
     ]
 
-@router.get("/courses/{course_id}", response_model=Course)
+
+@router.get('/courses/{course_id}', response_model=Course)
 async def get_course(
     course_id: str,
     service: CourseService = Depends(get_course_service),
@@ -57,10 +61,11 @@ async def get_course(
 ):
     course = await service.get_course(course_id)
     if not course:
-        raise HTTPException(status_code=404, detail="Course not found")
+        raise HTTPException(status_code=404, detail='Course not found')
     return course
 
-@router.delete("/courses/{course_id}")
+
+@router.delete('/courses/{course_id}')
 async def delete_course(
     course_id: str,
     service: CourseService = Depends(get_course_service),
@@ -68,12 +73,11 @@ async def delete_course(
 ):
     success = await service.delete_course(course_id)
     if not success:
-        raise HTTPException(
-            status_code=404, detail=f"Course with ID {course_id} not found"
-        )
-    return {"message": f"Course with ID {course_id} deleted successfully"}
+        raise HTTPException(status_code=404, detail=f'Course with ID {course_id} not found')
+    return {'message': f'Course with ID {course_id} deleted successfully'}
 
-@router.patch("/courses/{course_id}", response_model=Course)
+
+@router.patch('/courses/{course_id}', response_model=Course)
 async def patch_course(
     course_id: str,
     course_data: dict,
@@ -83,7 +87,7 @@ async def patch_course(
     try:
         course = await service.patch_course(course_id, course_data)
         if not course:
-            raise HTTPException(status_code=404, detail="Course not found")
+            raise HTTPException(status_code=404, detail='Course not found')
         return course
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -4,47 +4,69 @@
       <div class="h-[200px] bg-gray-100 flex items-center justify-center">
         <img
           :src="course.image"
-          :alt="course.title"
+          :alt="course.name"
           class="w-full h-full object-cover"
         />
       </div>
     </template>
-    <template #title>{{ course.title }}</template>
+    <template #title>
+      <p>{{ course.course_name }}</p>
+      <p class="text-sm text-gray-500">課程類型: {{ course.course_type }}</p>
+    </template>
     <template #subtitle>
       <div class="flex justify-between items-center text-gray-600">
-        <span>講師: {{ course.instructor }}</span>
+        <span>
+          講師:
+          {{
+            userStore.allUsersInfo.find(
+              (user) => user.user_id === course.teacher_id
+            )?.user_name || "未知的講師"
+          }}
+        </span>
         <Rating :model-value="course.rating" readonly />
       </div>
     </template>
     <template #content>
-      <p class="text-gray-600 mb-4">{{ course.description }}</p>
+      <p class="text-gray-600 mb-4 border-2 rounded-sm border-gray-500">
+        {{ course.course_intro }}
+      </p>
     </template>
     <template #footer>
       <Button
-        label="查看詳情"
+        :label="'查看詳情'"
         class="w-full"
-        @click="$emit('show-details', course.id)"
+        @click="$emit('show-details', course.course_id)"
       />
+      <span class="float-right">NT$ {{ course.course_price }}</span>
     </template>
   </Card>
 </template>
 
 <script setup>
+import { useUserStore } from "@/stores/user";
 import Button from "primevue/button";
 import Card from "primevue/card";
 import Rating from "primevue/rating";
+
+const userStore = useUserStore();
+
+const defaultImage = "../assets/images/default-course.png";
 
 defineProps({
   course: {
     type: Object,
     required: true,
     default: () => ({
-      id: 1,
-      title: "",
-      instructor: "",
+      course_id: "",
+      course_name: "",
+      course_type: "",
+      course_intro: "",
+      course_outline: "",
+      course_price: 0,
+      course_image: defaultImage,
+      teacher_id: "",
+      students: "",
       rating: 0,
-      description: "",
-      image: "",
     }),
   },
 });

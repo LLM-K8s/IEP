@@ -7,16 +7,21 @@
       </section>
 
       <section id="hotcourse" class="hotcourse-section mt-[120px] px-[64px]">
-        <HotCourseList />
+        <HotCourseList
+          v-if="isAuth"
+          :courses="filteredCourses"
+          :loading="loading"
+        />
       </section>
     </div>
   </DefaultLayout>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useUserStore } from "@/stores/user";
+import { useCourseStore } from "../../stores/course";
 import DefaultLayout from "../../Layout/default.vue";
 import FeatureList from "./Feature/FeatureList.vue";
 import HeroSection from "./HeroSection.vue";
@@ -24,10 +29,33 @@ import HotCourseList from "./HotCourse/HotCourseList.vue";
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
+const courseStore = useCourseStore();
 
-onMounted(() => {
-  authStore.checkAuth();
-  userStore.fetchUser();
+const isAuth = ref(false);
+const loading = ref(true);
+
+const filteredCourses = computed(() => {
+  loading.value = true;
+  if (isAuth.value) {
+    const usersCount = userStore.allUsersInfo?.length / 2 || 0;
+    return courseStore.courses.filter((course) => {
+      const studentCount =
+        [...course.students.matchAll(/ObjectId\('([a-f\d]{24})'\)/gi)].map(
+          (m) => m[1]
+        )?.length || 0;
+      console.log(studentCount);
+      loading.value = false;
+      return studentCount > usersCount;
+    });
+  }
+});
+
+onMounted(async () => {
+  isAuth.value = await authStore.checkAuth();
+  if (isAuth.value) {
+    userStore.fetchUser();
+    courseStore.fetchCourses();
+  }
 });
 </script>
 
