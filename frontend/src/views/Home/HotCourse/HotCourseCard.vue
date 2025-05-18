@@ -27,7 +27,7 @@
       </div>
     </template>
     <template #content>
-      <p class="text-gray-600 mb-4 border-2 rounded-sm border-gray-500">
+      <p class="text-gray-600">
         {{ course.course_intro }}
       </p>
     </template>
@@ -109,6 +109,9 @@ defineEmits(["show-details"]);
 
 :deep(.p-card-content) {
   padding: 1.5rem;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: gray;
 }
 
 :deep(.p-card-footer) {

@@ -10,12 +10,8 @@
       </div>
     </template>
     <template #title>
-      <div class="flex justify-between items-center">
-        <span>{{ course.course_name }}</span>
-        <span class="text-sm text-gray-500"
-          >課程類型: {{ course.course_type }}</span
-        >
-      </div>
+      <p>{{ course.course_name }}</p>
+      <p class="text-sm text-gray-500">課程類型: {{ course.course_type }}</p>
     </template>
     <template #subtitle>
       <div class="flex justify-between items-center text-gray-600">
@@ -31,7 +27,9 @@
       </div>
     </template>
     <template #content>
-      <p class="text-gray-600 mb-4">{{ course.course_intro }}</p>
+      <p class="text-gray-600">
+        {{ course.course_intro }}
+      </p>
     </template>
     <template #footer>
       <Button
@@ -140,6 +138,9 @@ defineEmits(["show-details", "moved-class"]);
 
 :deep(.p-card-content) {
   padding: 1.5rem;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: gray;
 }
 
 :deep(.p-card-footer) {
