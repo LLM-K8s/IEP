@@ -48,6 +48,7 @@ async def list_course(
             course_image=course.course_image,
             teacher_id=str(course.teacher_id),
             students=str(course.students),
+            course_content=course.course_content,
         )
         for course in courses
     ]
