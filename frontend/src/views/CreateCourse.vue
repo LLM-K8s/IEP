@@ -242,10 +242,6 @@ const isFormValid = computed(() => {
   );
 });
 
-const handleFileSelected = (file) => {
-  courseImage.value = file;
-};
-
 const resetForm = () => {
   courseName.value = "";
   courseType.value = "";
