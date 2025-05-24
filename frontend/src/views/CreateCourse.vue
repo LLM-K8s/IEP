@@ -61,8 +61,8 @@
             >課程封面圖片(可選)</label
           >
           <FileUpload
-            name="course-image"
-            url="/api/upload"
+            name="file"
+            url="http://localhost:8000/api/upload"
             @upload="onTemplatedUpload"
             :multiple="false"
             accept="image/*"
@@ -71,6 +71,8 @@
             :auto="true"
             :disabled="previewFiles.length > 0"
             class="w-full"
+            :customUpload="true"
+            @uploader="customUploader"
           >
             <template #header="{ chooseCallback, clearCallback, files }">
               <div
@@ -132,22 +134,18 @@
                       >{{ file.name }}</span
                     >
                     <Badge
-                      :value="
-                        uploadedFiles.includes(file) ? '已上傳' : '待上傳'
-                      "
-                      :severity="
-                        uploadedFiles.includes(file) ? 'success' : 'warn'
-                      "
+                      :value="file.uploaded ? '已上傳' : '待上傳'"
+                      :severity="file.uploaded ? 'success' : 'warn'"
                     />
-                    <Button
-                      icon="pi pi-times"
-                      @click="
-                        onRemoveTemplatingFile(file, removeFileCallback, index)
-                      "
-                      outlined
-                      rounded
-                      severity="danger"
-                    />
+                    <div class="flex gap-2">
+                      <Button
+                        icon="pi pi-times"
+                        @click="onRemoveTemplatingFile(file, removeFileCallback, index)"
+                        outlined
+                        rounded
+                        severity="danger"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -259,7 +257,7 @@ const submitCourse = async () => {
     course_type: courseType.value,
     course_intro: courseIntro.value,
     course_outline: courseOutline.value,
-    course_image: "",
+    course_image: courseImage.value || "",
     course_price: Number(coursePrice.value),
     course_content: [],
     teacher_id: teacherId,
@@ -294,19 +292,59 @@ const onSubmit = () => {
   submitCourse();
 };
 
+const customUploader = async (event) => {
+  const file = event.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.post(
+      'http://localhost:8000/api/upload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${authStore.currentUser.access_token}`,
+        },
+      }
+    );
+
+    if (response.data && response.data.url) {
+      courseImage.value = response.data.url;
+      const objectURL = URL.createObjectURL(file);
+      uploadedFiles.value = [
+        {
+          ...file,
+          objectURL,
+          uploaded: true,
+          url: response.data.url
+        },
+      ];
+      previewFiles.value = uploadedFiles.value;
+      swal('上傳成功！', '圖片已成功上傳。', 'success');
+    }
+  } catch (error) {
+    console.error('檔案上傳失敗:', error);
+    swal('檔案上傳失敗！', '請稍後再試。', 'error');
+    // 上傳失敗時清空狀態
+    courseImage.value = null;
+    uploadedFiles.value = [];
+    previewFiles.value = [];
+  }
+};
+
 const onTemplatedUpload = (event) => {
   const files = event.files;
   if (files && files.length > 0) {
     const file = files[0];
-    courseImage.value = file;
     const objectURL = URL.createObjectURL(file);
-    uploadedFiles.value = [
-      {
-        ...file,
-        objectURL,
-      },
-    ];
-    previewFiles.value = uploadedFiles.value;
+    previewFiles.value = [{
+      ...file,
+      objectURL,
+      uploaded: false
+    }];
   }
 };
 
@@ -316,11 +354,13 @@ const onSelectedFiles = (event) => {
     const file = files[0];
     if (file) {
       const objectURL = URL.createObjectURL(file);
-      courseImage.value = {
+      previewFiles.value = [{
         ...file,
         objectURL,
-      };
-      previewFiles.value = [courseImage.value];
+        uploaded: false
+      }];
+      // 自動觸發上傳
+      customUploader({ files: [file] });
     }
   }
 };
