@@ -23,6 +23,12 @@ class Settings(BaseSettings):
     OIDC_ISSUER: str = Field(default='http://172.16.1.16:8081/realms/coder', env='OIDC_ISSUER')
     OIDC_AUDIENCE: str = Field(default='account', env='OIDC_AUDIENCE')
 
+    # Minio設定
+    MINIO_ENDPOINT: str = Field(default='172.16.3.49:9000', env='MINIO_ENDPOINT')
+    MINIO_ACCESS_KEY: str = Field(default='minioadmin', env='MINIO_ACCESS_KEY')
+    MINIO_SECRET_KEY: str = Field(default='minioadmin', env='MINIO_SECRET_KEY')
+    MINIO_BUCKET: str = Field(default='coursefile', env='MINIO_BUCKET')
+
 
 # 創建全局配置實例
 settings = Settings()
