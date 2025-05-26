@@ -3,19 +3,15 @@
     <template #header>
       <div class="h-[200px] bg-gray-100 flex items-center justify-center">
         <img
-          :src="course.image"
-          :alt="course.name"
+          :src="course.course_image != '' ? course.course_image : defaultImage"
+          :alt="course.course_name"
           class="w-full h-full object-cover"
         />
       </div>
     </template>
     <template #title>
-      <div class="flex justify-between items-center">
-        <span>{{ course.course_name }}</span>
-        <span class="text-sm text-gray-500"
-          >課程類型: {{ course.course_type }}</span
-        >
-      </div>
+      <p>{{ course.course_name }}</p>
+      <p class="text-sm text-gray-500">課程類型: {{ course.course_type }}</p>
     </template>
     <template #subtitle>
       <div class="flex justify-between items-center text-gray-600">
@@ -31,7 +27,9 @@
       </div>
     </template>
     <template #content>
-      <p class="text-gray-600 mb-4">{{ course.course_intro }}</p>
+      <p class="text-gray-600">
+        {{ course.course_intro }}
+      </p>
     </template>
     <template #footer>
       <Button
@@ -74,10 +72,9 @@ import { useUserStore } from "@/stores/user";
 import Button from "primevue/button";
 import Card from "primevue/card";
 import Rating from "primevue/rating";
+import defaultImage from "../../assets/images/default-course.jpg";
 
 const userStore = useUserStore();
-
-const defaultImage = "../assets/images/default-course.png";
 
 defineProps({
   course: {
@@ -90,7 +87,7 @@ defineProps({
       course_intro: "",
       course_outline: "",
       course_price: 0,
-      course_image: defaultImage,
+      course_image: "",
       teacher_id: "",
       students: "",
       rating: 0,
@@ -140,6 +137,9 @@ defineEmits(["show-details", "moved-class"]);
 
 :deep(.p-card-content) {
   padding: 1.5rem;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: gray;
 }
 
 :deep(.p-card-footer) {

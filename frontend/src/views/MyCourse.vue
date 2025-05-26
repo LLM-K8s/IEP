@@ -11,7 +11,6 @@
         :courses="filteredCourses"
         :selectMode="false"
         :loading="loading"
-        @movedClass="moved_class"
       />
     </div>
   </DefaultLayout>
@@ -36,11 +35,6 @@ const switchOptions = ["全部課程", "我開設的課程"];
 
 const loading = ref(true);
 
-const moved_class = (course_id) => {
-  courseStore.saveCurrentClass(course_id);
-  console.log(courseStore.currentClass);
-};
-
 const filteredCourses = computed(() => {
   loading.value = true;
   console.log(selectValue.value);
@@ -55,6 +49,7 @@ const filteredCourses = computed(() => {
 });
 
 onMounted(async () => {
+  loading.value = true;
   authStore.checkAuth();
   await userStore.fetchUser();
   await courseStore.fetchCourses();

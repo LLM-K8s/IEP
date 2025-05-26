@@ -13,7 +13,6 @@ class ChapterFile(Model):
 
 # 章節
 class Chapter(Model):
-    chapter_id: Optional[ObjectId] = None
     chapter_name: str
     chapter_file: List[ChapterFile]  # 章節文件列表
 
