@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export const useCourseStore = defineStore("courseStore", {
   state: () => ({
     courses: [], // 存儲課程列表
@@ -19,7 +21,7 @@ export const useCourseStore = defineStore("courseStore", {
         )
       );
       try {
-        const response = await axios.get("http://localhost:8000/api/courses/", {
+        const response = await axios.get(`${apiBaseUrl}/api/courses/`, {
           headers: {
             Authorization: `Bearer ${this.authInfo.access_token}`,
           },

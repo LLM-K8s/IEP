@@ -1,6 +1,8 @@
 import axios from "axios";
 import { UserManager, WebStorageStateStore } from "oidc-client-ts";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const config = {
   authority: "http://172.16.1.16:8081/realms/coder", // 請替換為您的 OIDC 提供者網址
   client_id: "vue", // 請替換為您的客戶端 ID
@@ -77,7 +79,7 @@ const getUser = async () => {
 
 const storeUser = async (access_token) => {
   try {
-    await axios.get("http://localhost:8000/api/me/", {
+    await axios.get(`${apiBaseUrl}/api/me/`, {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },

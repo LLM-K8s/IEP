@@ -4,6 +4,8 @@ import { computed, ref } from "vue";
 import { authService } from "../services/auth";
 import swal from "sweetalert";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export const useAuthStore = defineStore("auth", () => {
   // 狀態
   const state = ref({
@@ -68,7 +70,7 @@ export const useAuthStore = defineStore("auth", () => {
       }
 
       // 再向後端驗證權限
-      await axios.get("http://localhost:8000/api/me/", {
+      await axios.get(`${apiBaseUrl}/api/me/`, {
         headers: {
           Authorization: `Bearer ${user.access_token}`,
         },

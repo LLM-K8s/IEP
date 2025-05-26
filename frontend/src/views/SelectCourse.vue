@@ -46,6 +46,8 @@ import InputText from "primevue/inputtext";
 import Select from "primevue/select";
 import swal from "sweetalert";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const courseStore = useCourseStore();
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -85,7 +87,7 @@ const chooseCourse = async (courseId) => {
     };
     try {
       const response = await axios.patch(
-        `http://localhost:8000/api/courses/${selectedCourse.course_id}`,
+        `${apiBaseUrl}/api/courses/${selectedCourse.course_id}`,
         payload,
         {
           headers: {

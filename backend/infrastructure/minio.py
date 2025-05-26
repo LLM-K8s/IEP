@@ -1,15 +1,15 @@
 from minio import Minio
 
-server = '172.16.3.49:9000'
+from infrastructure.config import settings
 
 
 class MinioClient:
     def __init__(self):
         self.client = Minio(
-            server,
+            settings.MINIO_ENDPOINT,
             secure=False,
         )
-        self.bucket = 'coursefile'
+        self.bucket = settings.MINIO_BUCKET
         if not self.client.bucket_exists(self.bucket):
             self.client.make_bucket(self.bucket)
 

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export const useUserStore = defineStore("userStore", {
   state: () => ({
     allUsersInfo: [], // 所有使用者
@@ -18,7 +20,7 @@ export const useUserStore = defineStore("userStore", {
         )
       );
       try {
-        const response = await axios.get("http://localhost:8000/api/users/", {
+        const response = await axios.get(`${apiBaseUrl}/api/users/`, {
           headers: {
             Authorization: `Bearer ${this.authInfo.access_token}`,
           },
@@ -31,7 +33,7 @@ export const useUserStore = defineStore("userStore", {
       }
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/current_user/",
+          `${apiBaseUrl}/api/current_user/`,
           {
             headers: {
               Authorization: `Bearer ${this.authInfo.access_token}`,
