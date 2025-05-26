@@ -25,6 +25,7 @@ wheels/
 
 # frontend test
 test
+.env
 
 # Editor directories and files
 .vscode/*

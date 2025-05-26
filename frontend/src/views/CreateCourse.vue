@@ -208,6 +208,8 @@ import { useAuthStore } from "../stores/auth";
 import { courseTypes } from "../stores/courseType";
 import { useUserStore } from "../stores/user";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const userStore = useUserStore();
 const authStore = useAuthStore();
 
@@ -271,7 +273,7 @@ const submitCourse = async () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/courses/",
+      `${apiBaseUrl}/api/courses/`,
       payload,
       {
         headers: {
@@ -306,7 +308,7 @@ const customUploader = async (event) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/upload",
+      `${apiBaseUrl}/api/upload`,
       formData,
       {
         headers: {
