@@ -1,17 +1,19 @@
 from minio import Minio
 
+server = '172.16.3.49:9000'
+
 
 class MinioClient:
     def __init__(self):
         self.client = Minio(
-            '172.16.3.49:9000',
+            server,
             secure=False,
         )
         self.bucket = 'coursefile'
         if not self.client.bucket_exists(self.bucket):
             self.client.make_bucket(self.bucket)
 
-    def upload_file(self, file_obj, filename, content_type):
+    def upload_file(self, file_obj, filename, content_type) -> str:
         self.client.put_object(
             self.bucket,
             filename,

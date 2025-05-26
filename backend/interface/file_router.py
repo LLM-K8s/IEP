@@ -12,4 +12,4 @@ service = FileService()
 async def upload_file(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     entity = FileEntity(filename=file.filename, content_type=file.content_type)
     url = service.upload(entity, file.file)
-    return {'filename': file.filename, 'url': url}
+    return {'filename': file.filename, 'url': f'{"http://172.16.3.49:9000/" + url}'}

@@ -140,7 +140,13 @@
                     <div class="flex gap-2">
                       <Button
                         icon="pi pi-times"
-                        @click="onRemoveTemplatingFile(file, removeFileCallback, index)"
+                        @click="
+                          onRemoveTemplatingFile(
+                            file,
+                            removeFileCallback,
+                            index
+                          )
+                        "
                         outlined
                         rounded
                         severity="danger"
@@ -174,7 +180,6 @@
             class="w-full"
           />
         </div>
-
         <Button
           label="提交審核"
           class="w-[100%] mt-4"
@@ -297,38 +302,39 @@ const customUploader = async (event) => {
   if (!file) return;
 
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append("file", file);
 
   try {
     const response = await axios.post(
-      'http://localhost:8000/api/upload',
+      "http://localhost:8000/api/upload",
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${authStore.currentUser.access_token}`,
         },
       }
     );
 
     if (response.data && response.data.url) {
+      console.log(response.data);
       courseImage.value = response.data.url;
       const objectURL = URL.createObjectURL(file);
       uploadedFiles.value = [
         {
           ...file,
-          objectURL,
+          objectURL, // Local preview URL
           uploaded: true,
-          url: response.data.url
+          minioUrl: response.data.url, // Store MinIO URL separately
         },
       ];
       previewFiles.value = uploadedFiles.value;
-      swal('上傳成功！', '圖片已成功上傳。', 'success');
+      swal("上傳成功！", "圖片已成功上傳。", "success");
     }
   } catch (error) {
-    console.error('檔案上傳失敗:', error);
-    swal('檔案上傳失敗！', '請稍後再試。', 'error');
-    // 上傳失敗時清空狀態
+    console.error("檔案上傳失敗:", error);
+    swal("檔案上傳失敗！", "請稍後再試。", "error");
+    // Clear all image states on failure
     courseImage.value = null;
     uploadedFiles.value = [];
     previewFiles.value = [];
@@ -340,11 +346,13 @@ const onTemplatedUpload = (event) => {
   if (files && files.length > 0) {
     const file = files[0];
     const objectURL = URL.createObjectURL(file);
-    previewFiles.value = [{
-      ...file,
-      objectURL,
-      uploaded: false
-    }];
+    previewFiles.value = [
+      {
+        ...file,
+        objectURL,
+        uploaded: false,
+      },
+    ];
   }
 };
 
@@ -354,11 +362,13 @@ const onSelectedFiles = (event) => {
     const file = files[0];
     if (file) {
       const objectURL = URL.createObjectURL(file);
-      previewFiles.value = [{
-        ...file,
-        objectURL,
-        uploaded: false
-      }];
+      previewFiles.value = [
+        {
+          ...file,
+          objectURL,
+          uploaded: false,
+        },
+      ];
       // 自動觸發上傳
       customUploader({ files: [file] });
     }
