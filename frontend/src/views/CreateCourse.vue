@@ -268,20 +268,16 @@ const submitCourse = async () => {
     course_price: Number(coursePrice.value),
     course_content: [],
     teacher_id: teacherId,
-    students: [],
+    students: [teacherId],
   };
 
   try {
-    const response = await axios.post(
-      `${apiBaseUrl}/api/courses/`,
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authStore.currentUser.access_token}`,
-        },
-      }
-    );
+    const response = await axios.post(`${apiBaseUrl}/api/courses/`, payload, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.currentUser.access_token}`,
+      },
+    });
     swal("課程新增成功！", "", "success");
     console.log("儲存成功:", response.data);
     resetForm();
@@ -307,16 +303,12 @@ const customUploader = async (event) => {
   formData.append("file", file);
 
   try {
-    const response = await axios.post(
-      `${apiBaseUrl}/api/upload`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${authStore.currentUser.access_token}`,
-        },
-      }
-    );
+    const response = await axios.post(`${apiBaseUrl}/api/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${authStore.currentUser.access_token}`,
+      },
+    });
 
     if (response.data && response.data.url) {
       console.log(response.data);
