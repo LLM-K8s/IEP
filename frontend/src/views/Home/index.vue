@@ -43,9 +43,8 @@ const filteredCourses = computed(() => {
         [...course.students.matchAll(/ObjectId\('([a-f\d]{24})'\)/gi)].map(
           (m) => m[1]
         )?.length || 0;
-      console.log(studentCount);
       loading.value = false;
-      return studentCount > usersCount;
+      return studentCount >= usersCount;
     });
   }
 });
