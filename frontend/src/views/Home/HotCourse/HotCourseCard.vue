@@ -3,8 +3,10 @@
     <template #header>
       <div class="h-[200px] bg-gray-100 flex items-center justify-center">
         <img
-          :src="course.image"
-          :alt="course.name"
+          :src="
+            course.course_image?.length ? course.course_image : defaultImage
+          "
+          :alt="course.course_name"
           class="w-full h-full object-cover"
         />
       </div>
@@ -47,10 +49,9 @@ import { useUserStore } from "@/stores/user";
 import Button from "primevue/button";
 import Card from "primevue/card";
 import Rating from "primevue/rating";
+import defaultImage from "../../../assets/images/default-course.jpg";
 
 const userStore = useUserStore();
-
-const defaultImage = "../assets/images/default-course.png";
 
 defineProps({
   course: {
@@ -63,7 +64,7 @@ defineProps({
       course_intro: "",
       course_outline: "",
       course_price: 0,
-      course_image: defaultImage,
+      course_image: "",
       teacher_id: "",
       students: "",
       rating: 0,
