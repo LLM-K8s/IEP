@@ -7,6 +7,8 @@ import PrimeVue from "primevue/config";
 import App from "./App.vue";
 import router from "./router/index.js";
 import { useAuthStore } from "./stores/auth";
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
 
 const Noir = definePreset(Aura, {
   semantic: {
@@ -69,6 +71,8 @@ app.use(PrimeVue, {
     },
   },
 });
+app.use(ToastService);
+app.component("Toast", Toast);
 
 // 設置 token 刷新監聽器
 const authStore = useAuthStore(pinia);
