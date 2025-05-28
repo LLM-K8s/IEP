@@ -1,9 +1,12 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <p class="text-gray-800 text-[32px] text-center mt-[120px] font-bold mb-8">
+    <p class="text-[#1e2663] text-[32px] text-center mt-[120px] font-bold mb-8">
       熱門課程
     </p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      v-if="courses.length > 0"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
       <template v-if="loading">
         <div v-for="n in 3" :key="n" class="p-2">
           <Skeleton height="400px" class="mb-2" />
@@ -17,6 +20,16 @@
           @show-details="showCourseDetails"
         />
       </template>
+    </div>
+    <div
+      v-if="courses.length == 0"
+      class="bento-item bg-[#eef3ff] flex justify-center h-[300px] rounded-2xl"
+    >
+      <p
+        class="text-xl font-semibold text-gray-800 flex items-center justify-center w-full h-full"
+      >
+        尚無熱門課程
+      </p>
     </div>
 
     <Dialog
@@ -94,5 +107,15 @@ const showCourseDetails = (courseId) => {
   border-bottom-right-radius: 1rem;
   background-color: #f8fafc;
   padding: 1rem 1.5rem;
+}
+
+.bento-item {
+  transition: all 0.3s ease;
+}
+
+.bento-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 </style>

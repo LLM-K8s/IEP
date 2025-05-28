@@ -38,14 +38,18 @@ const filteredCourses = computed(() => {
   loading.value = true;
   if (isAuth.value) {
     const usersCount = userStore.allUsersInfo?.length / 2 || 0;
-    return courseStore.courses.filter((course) => {
-      const studentCount =
-        [...course.students.matchAll(/ObjectId\('([a-f\d]{24})'\)/gi)].map(
-          (m) => m[1]
-        )?.length || 0;
+    if (usersCount > 0) {
+      return courseStore.courses.filter((course) => {
+        const studentCount =
+          [...course.students.matchAll(/ObjectId\('([a-f\d]{24})'\)/gi)].map(
+            (m) => m[1]
+          )?.length || 0;
+        loading.value = false;
+        return studentCount >= usersCount;
+      });
+    } else {
       loading.value = false;
-      return studentCount >= usersCount;
-    });
+    }
   }
 });
 

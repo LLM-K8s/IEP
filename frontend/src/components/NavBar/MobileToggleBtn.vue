@@ -2,7 +2,7 @@
   <div class="md:hidden">
     <button
       @click="$emit('toggle')"
-      class="text-gray-800 hover:text-white focus:outline-none"
+      class="text-gray-200 hover:text-white focus:outline-none"
     >
       <svg
         class="w-6 h-6"
