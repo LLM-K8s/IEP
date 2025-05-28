@@ -72,7 +72,7 @@ import { useUserStore } from "@/stores/user";
 import Button from "primevue/button";
 import Card from "primevue/card";
 import Rating from "primevue/rating";
-import defaultImage from "../../assets/images/default-course.jpg";
+import defaultImage from "@/assets/images/default-course.jpg";
 
 const userStore = useUserStore();
 
