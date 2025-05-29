@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     # 認證設定
     OIDC_ISSUER: str = Field(default='http://172.16.1.16:8081/realms/coder', env='OIDC_ISSUER')
     OIDC_AUDIENCE: str = Field(default='account', env='OIDC_AUDIENCE')
+    OIDC_CLIENT_ID: str = Field(default='vue', env='OIDC_CLIENT_ID')
+    OIDC_CLIENT_SECRET: str = Field(default='your_client_secret_here', env='OIDC_CLIENT_SECRET')
 
     # Minio設定
     MINIO_ENDPOINT: str = Field(default='172.16.3.49:9000', env='MINIO_ENDPOINT')

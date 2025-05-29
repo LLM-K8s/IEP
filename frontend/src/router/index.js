@@ -8,6 +8,7 @@ import Home from "../views/Home/index.vue";
 import MyCourse from "../views/MyCourse.vue";
 import SelectCourse from "../views/SelectCourse.vue";
 import Teacher from "../views/Teacher.vue";
+import BackendCallbackHandler from "../views/BackendCallbackHandler.vue"; // Import new component
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -16,7 +17,12 @@ const routes = [
   { path: "/MyCourse", name: "MyCourse", component: MyCourse, meta: { requiresAuth: true } },
   { path: "/Class", name: "Class", component: Class, meta: { requiresAuth: true } },
   { path: "/Teacher", name: "Teacher", component: Teacher, meta: { requiresAuth: true } },
-  { path: "/callback", name: "Callback", component: Callback },
+  { path: "/callback", name: "Callback", component: Callback }, // Old callback, to be removed later
+  {
+    path: '/auth/callback', // New route for backend callback
+    name: 'BackendCallback',
+    component: BackendCallbackHandler,
+  },
 ];
 
 const router = createRouter({
