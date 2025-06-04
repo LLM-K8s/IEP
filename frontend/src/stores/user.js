@@ -20,7 +20,7 @@ export const useUserStore = defineStore("userStore", {
         )
       );
       try {
-        const response = await axios.get(`${apiBaseUrl}/api/users/`, {
+        const response = await axios.get(`${apiBaseUrl}/api/users`, {
           headers: {
             Authorization: `Bearer ${this.authInfo.access_token}`,
           },
@@ -33,7 +33,7 @@ export const useUserStore = defineStore("userStore", {
       }
       try {
         const response = await axios.get(
-          `${apiBaseUrl}/api/current_user/`,
+          `${apiBaseUrl}/api/current_user`,
           {
             headers: {
               Authorization: `Bearer ${this.authInfo.access_token}`,
