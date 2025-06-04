@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 from pydantic import Field
@@ -28,6 +29,12 @@ class Settings(BaseSettings):
     MINIO_ACCESS_KEY: str = Field(default='minioadmin', env='MINIO_ACCESS_KEY')
     MINIO_SECRET_KEY: str = Field(default='minioadmin', env='MINIO_SECRET_KEY')
     MINIO_BUCKET: str = Field(default='coursefile', env='MINIO_BUCKET')
+
+    # frontend
+    FRONTEND_DIST_DIR: Path = Field(
+        default='../frontend/dist',
+        env='FRONTEND_DIST_DIR',
+    )
 
 
 # 創建全局配置實例

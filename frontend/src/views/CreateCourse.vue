@@ -254,6 +254,8 @@ const resetForm = () => {
   courseOutline.value = "";
   courseImage.value = null;
   coursePrice.value = 0;
+  uploadedFiles.value = [];
+  previewFiles.value = [];
 };
 
 const submitCourse = async () => {

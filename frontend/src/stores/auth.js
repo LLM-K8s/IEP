@@ -70,7 +70,7 @@ export const useAuthStore = defineStore("auth", () => {
       }
 
       // 再向後端驗證權限
-      await axios.get(`${apiBaseUrl}/api/me/`, {
+      await axios.get(`${apiBaseUrl}/api/me`, {
         headers: {
           Authorization: `Bearer ${user.access_token}`,
         },

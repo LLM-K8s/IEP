@@ -79,7 +79,7 @@ const getUser = async () => {
 
 const storeUser = async (access_token) => {
   try {
-    await axios.get(`${apiBaseUrl}/api/me/`, {
+    await axios.get(`${apiBaseUrl}/api/me`, {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },

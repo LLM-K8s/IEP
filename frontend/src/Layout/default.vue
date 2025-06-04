@@ -11,7 +11,7 @@ import NavBar from "../components/NavBar/NavBar.vue";
 
 <style scoped>
 .background-image {
-  background-image: url("../assets/images/email-pattern.png");
+  background-color: #b1cce7;
   min-height: 100vh;
 }
 </style>
