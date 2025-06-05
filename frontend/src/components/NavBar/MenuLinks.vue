@@ -1,10 +1,31 @@
+<template>
+  <div :class="containerClass">
+    <component
+      v-for="(link, idx) in links"
+      :key="idx"
+      :is="linkComponent(link)"
+      v-bind="linkProps(link)"
+      :class="linkClass"
+      @click="onLinkClick(link)"
+    >
+      {{ link.name }}
+    </component>
+  </div>
+</template>
+
 <script setup>
 import { useAuthStore } from "@/stores/auth";
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { useUserStore } from "../../stores/user";
 
-const props = defineProps({ isMobile: Boolean });
+const props = defineProps({
+  isMobile: Boolean,
+  menuLinkColor: {
+    type: String,
+    default: "text-gray-800",
+  },
+});
 const emit = defineEmits(["itemClick"]);
 
 const authStore = useAuthStore();
@@ -48,7 +69,8 @@ function linkProps(link) {
 }
 
 const linkClass = computed(() => [
-  "text-gray-200 hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
+  props.menuLinkColor,
+  "hover:text-white hover:bg-gray-600 rounded-lg p-2 cursor-pointer",
   props.isMobile ? "block text-center" : "text-[16px]",
 ]);
 const containerClass = computed(() =>
@@ -63,18 +85,3 @@ function onLinkClick(link) {
   }
 }
 </script>
-
-<template>
-  <div :class="containerClass">
-    <component
-      v-for="(link, idx) in links"
-      :key="idx"
-      :is="linkComponent(link)"
-      v-bind="linkProps(link)"
-      :class="linkClass"
-      @click="onLinkClick(link)"
-    >
-      {{ link.name }}
-    </component>
-  </div>
-</template>
