@@ -16,7 +16,7 @@ class CourseService:
             await self.engine.save(course)
             return course
         except ValidationError as e:
-            raise ValueError(f"課程資料驗證失敗: {e}")
+            raise ValueError(f'課程資料驗證失敗: {e}')
 
     async def list_course(self) -> List[Course]:
         return await self.engine.find(Course, {})
@@ -38,7 +38,7 @@ class CourseService:
             return False
         except:  # noqa: E722
             return False
-        
+
     async def patch_course(self, course_id: str, course_data: dict) -> Course | None:
         try:
             object_id = ObjectId(course_id)
@@ -50,6 +50,6 @@ class CourseService:
                 return course
             return None
         except ValidationError as e:
-            raise ValueError(f"課程資料驗證失敗: {e}")
+            raise ValueError(f'課程資料驗證失敗: {e}')
         except Exception as e:
-            raise ValueError(f"更新課程失敗: {e}")
+            raise ValueError(f'更新課程失敗: {e}')

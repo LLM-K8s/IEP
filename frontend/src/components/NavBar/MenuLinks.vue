@@ -52,7 +52,7 @@ const linkClass = computed(() => [
   props.isMobile ? "block text-center" : "text-[16px]",
 ]);
 const containerClass = computed(() =>
-  props.isMobile ? "space-y-3" : "flex space-x-2"
+  props.isMobile ? "space-y-3" : "flex space-x-2",
 );
 
 function onLinkClick(link) {

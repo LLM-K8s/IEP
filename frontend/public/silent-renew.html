@@ -1,15 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>Silent Renew</title>
     <script src="https://cdn.jsdelivr.net/npm/oidc-client-ts@2.1.0/dist/oidc-client.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <script>
-        new Oidc.UserManager().signinSilentCallback()
-            .catch(function(err) {
-                console.error('Silent renew failed:', err);
-            });
+      new Oidc.UserManager().signinSilentCallback().catch(function (err) {
+        console.error("Silent renew failed:", err);
+      });
     </script>
-</body>
+  </body>
 </html>

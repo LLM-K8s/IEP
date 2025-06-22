@@ -41,7 +41,7 @@ const filteredCourses = computed(() => {
   if (selectValue.value === "我開設的課程") {
     loading.value = false;
     return courseStore.myCourses.filter(
-      (course) => course.teacher_id === userStore.currentUserInfo.user_id
+      (course) => course.teacher_id === userStore.currentUserInfo.user_id,
     );
   }
   loading.value = false;

@@ -10,4 +10,3 @@ class User(Model):
     user_email: str
     user_name: str
     user_is_teacher: bool
-

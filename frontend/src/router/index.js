@@ -11,11 +11,36 @@ import Teacher from "../views/Teacher.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
-  { path: "/CreateCourse", name: "CreateCourse", component: CreateCourse, meta: { requiresAuth: true } },
-  { path: "/SelectCourse", name: "SelectCourse", component: SelectCourse, meta: { requiresAuth: true } },
-  { path: "/MyCourse", name: "MyCourse", component: MyCourse, meta: { requiresAuth: true } },
-  { path: "/Class", name: "Class", component: Class, meta: { requiresAuth: true } },
-  { path: "/Teacher", name: "Teacher", component: Teacher, meta: { requiresAuth: true } },
+  {
+    path: "/CreateCourse",
+    name: "CreateCourse",
+    component: CreateCourse,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/SelectCourse",
+    name: "SelectCourse",
+    component: SelectCourse,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/MyCourse",
+    name: "MyCourse",
+    component: MyCourse,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/Class",
+    name: "Class",
+    component: Class,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/Teacher",
+    name: "Teacher",
+    component: Teacher,
+    meta: { requiresAuth: true },
+  },
   { path: "/callback", name: "Callback", component: Callback },
 ];
 
