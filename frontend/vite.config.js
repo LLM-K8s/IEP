@@ -8,7 +8,7 @@ import vueDevTools from "vite-plugin-vue-devtools";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd(), "");
 
   return {
     plugins: [
@@ -16,9 +16,7 @@ export default defineConfig(({ mode }) => {
       vueDevTools(),
       tailwindcss(),
       Components({
-        resolvers: [
-          PrimeVueResolver(),
-        ],
+        resolvers: [PrimeVueResolver()],
       }),
     ],
     resolve: {
@@ -27,7 +25,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      'process.env.VITE_API_BASE_URL': JSON.stringify(env.VITE_API_BASE_URL)
-    }
+      "process.env.VITE_API_BASE_URL": JSON.stringify(env.VITE_API_BASE_URL),
+    },
   };
 });

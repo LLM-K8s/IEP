@@ -144,7 +144,7 @@
                           onRemoveTemplatingFile(
                             file,
                             removeFileCallback,
-                            index
+                            index,
                           )
                         "
                         outlined
@@ -232,7 +232,7 @@ const convertHtmlToText = (html) => {
 const searchTypes = (event) => {
   const query = event.query.toLowerCase();
   filteredTypes.value = courseTypes.filter((type) =>
-    type.toLowerCase().includes(query)
+    type.toLowerCase().includes(query),
   );
 };
 

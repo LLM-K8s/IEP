@@ -74,7 +74,7 @@ const filteredCourses = computed(() => {
 const chooseCourse = async (courseId) => {
   console.log("選擇的課程ID:", courseId);
   const selectedCourse = courseStore.courses.find(
-    (course) => course.course_id === courseId
+    (course) => course.course_id === courseId,
   );
   if (selectedCourse.course_price === 0) {
     console.log("免費課程");
@@ -94,7 +94,7 @@ const chooseCourse = async (courseId) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authStore.currentUser.access_token}`,
           },
-        }
+        },
       );
       swal("選擇成功！", "已將課程新增至您的課程清單", "success");
       console.log("選擇成功:", response.data);

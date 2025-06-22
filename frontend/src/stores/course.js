@@ -17,8 +17,8 @@ export const useCourseStore = defineStore("courseStore", {
       this.error = null;
       this.authInfo = JSON.parse(
         localStorage.getItem(
-          "oidc.user:http://172.16.1.16:8081/realms/coder:vue"
-        )
+          "oidc.user:http://172.16.1.16:8081/realms/coder:vue",
+        ),
       );
       try {
         const response = await axios.get(`${apiBaseUrl}/api/courses/`, {
@@ -36,13 +36,13 @@ export const useCourseStore = defineStore("courseStore", {
     },
     getMyCourses(user_id) {
       this.myCourses = this.courses.filter((course) =>
-        course.students.includes(user_id)
+        course.students.includes(user_id),
       );
       console.log(this.myCourses);
     },
     saveCurrentClass(course_id) {
       this.currentClass = this.courses.find(
-        (course) => course.course_id === course_id
+        (course) => course.course_id === course_id,
       );
     },
   },

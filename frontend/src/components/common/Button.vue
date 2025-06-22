@@ -9,7 +9,7 @@
       size === 'sm' && 'text-sm px-2 py-1',
       size === 'lg' && 'text-lg px-6 py-3',
       fullWidth && 'w-full',
-      className
+      className,
     ]"
     :disabled="disabled"
     @click="$emit('click')"
@@ -23,7 +23,8 @@ defineProps({
   variant: {
     type: String,
     default: "primary",
-    validator: (value) => ["primary", "secondary", "danger", "success"].includes(value),
+    validator: (value) =>
+      ["primary", "secondary", "danger", "success"].includes(value),
   },
   size: {
     type: String,

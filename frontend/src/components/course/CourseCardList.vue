@@ -41,8 +41,8 @@
           type="button"
           label="選擇此課程"
           @click="
-            $emit('select-course', selectedCourseDetails.course_id),
-              (showDetails = false)
+            ($emit('select-course', selectedCourseDetails.course_id),
+            (showDetails = false))
           "
         ></Button>
       </div>
@@ -82,7 +82,7 @@ const selectedCourseDetails = ref([]);
 const showCourseDetails = (courseId) => {
   console.log(courseId);
   selectedCourseDetails.value = props.courses.find(
-    (course) => course.course_id === courseId
+    (course) => course.course_id === courseId,
   );
   showDetails.value = true;
 };

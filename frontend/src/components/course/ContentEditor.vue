@@ -11,21 +11,14 @@
     </div>
     <div class="mb-2">
       <label class="block text-gray-600 mb-1">類型：</label>
-      <select
-        v-model="content.type"
-        class="w-full border rounded px-2 py-1"
-      >
+      <select v-model="content.type" class="w-full border rounded px-2 py-1">
         <option value="ppt">PPT</option>
         <option value="excel">Excel</option>
         <option value="doc">Word</option>
         <option value="video">Video</option>
       </select>
     </div>
-    <Button
-      variant="primary"
-      @click="handleSave"
-      :disabled="!isValid"
-    >
+    <Button variant="primary" @click="handleSave" :disabled="!isValid">
       儲存內容
     </Button>
   </div>

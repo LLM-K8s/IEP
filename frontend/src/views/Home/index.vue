@@ -42,7 +42,7 @@ const filteredCourses = computed(() => {
       return courseStore.courses.filter((course) => {
         const studentCount =
           [...course.students.matchAll(/ObjectId\('([a-f\d]{24})'\)/gi)].map(
-            (m) => m[1]
+            (m) => m[1],
           )?.length || 0;
         loading.value = false;
         return studentCount >= usersCount;
@@ -88,7 +88,9 @@ onMounted(async () => {
 
 :deep(.p-card) {
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 :deep(.p-card-header) {

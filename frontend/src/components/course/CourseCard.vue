@@ -19,7 +19,7 @@
           講師:
           {{
             userStore.allUsersInfo.find(
-              (user) => user.user_id === course.teacher_id
+              (user) => user.user_id === course.teacher_id,
             )?.user_name || "未知的講師"
           }}
         </span>
@@ -48,8 +48,8 @@
           v-if="!selectMode"
           label="進入課程"
           @click="
-            $emit('moved-class', course.course_id),
-              $router.push({ name: 'Class' })
+            ($emit('moved-class', course.course_id),
+            $router.push({ name: 'Class' }))
           "
           class="w-1/2"
         />
@@ -114,7 +114,9 @@ defineEmits(["show-details", "moved-class"]);
 
 :deep(.p-card) {
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 :deep(.p-card-header) {

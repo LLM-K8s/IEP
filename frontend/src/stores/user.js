@@ -16,8 +16,8 @@ export const useUserStore = defineStore("userStore", {
       this.error = null;
       this.authInfo = JSON.parse(
         localStorage.getItem(
-          "oidc.user:http://172.16.1.16:8081/realms/coder:vue"
-        )
+          "oidc.user:http://172.16.1.16:8081/realms/coder:vue",
+        ),
       );
       try {
         const response = await axios.get(`${apiBaseUrl}/api/users`, {
@@ -32,14 +32,11 @@ export const useUserStore = defineStore("userStore", {
         this.loading = false;
       }
       try {
-        const response = await axios.get(
-          `${apiBaseUrl}/api/current_user`,
-          {
-            headers: {
-              Authorization: `Bearer ${this.authInfo.access_token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/api/current_user`, {
+          headers: {
+            Authorization: `Bearer ${this.authInfo.access_token}`,
+          },
+        });
         this.currentUserInfo = response.data;
       } catch (error) {
         this.error = error.response?.data?.detail || "無法獲取使用者資料";
