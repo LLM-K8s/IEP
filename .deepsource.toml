@@ -1,0 +1,25 @@
+version = 1
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  plugins = ["vue"]
+
+[[analyzers]]
+name = "python"
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
+
+[[analyzers]]
+name = "docker"
+
+  [analyzers.meta]
+  dockerfile_paths = ["build/Dockerfile"]
+
+[[transformers]]
+name = "prettier"
+
+[[transformers]]
+name = "ruff"
