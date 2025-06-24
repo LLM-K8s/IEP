@@ -24,7 +24,7 @@ WORKDIR /app
 
 # 安裝構建依賴
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+    build-essential=12.9ubuntu3 \
     && rm -rf /var/lib/apt/lists/*
 
 # 複製依賴文件
