@@ -22,6 +22,9 @@ FROM python:3.11-slim AS backend-builder
 
 WORKDIR /app
 
+# 設置 shell 選項以處理管道錯誤
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # 安裝構建依賴
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential=12.9 \
