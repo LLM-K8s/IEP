@@ -24,17 +24,17 @@ WORKDIR /app
 
 # 安裝構建依賴
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential=12.9ubuntu3 \
+    build-essential=12.9 \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # 複製依賴文件
 COPY backend/pyproject.toml backend/uv.lock ./
 
-# 安裝 uv
-RUN pip install uv
-
-# 使用 uv 安裝依賴
-RUN uv pip install --system -e .
+# 安裝 uv 並安裝依賴
+RUN curl --proto '=https' --tlsv1.2 -LsSf https://github.com/astral-sh/uv/releases/download/0.7.14/uv-installer.sh | sh && \
+    export PATH="/root/.local/bin:$PATH" && \
+    uv pip install --system -e .
 
 ########################################
 # Runtime Stage

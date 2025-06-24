@@ -11,7 +11,8 @@
 		"ghcr.io/devcontainers-extra/features/mongosh-homebrew:1": {}
 	},
 	"mounts": [
-		"type=bind,source=${localEnv:HOME}/.ssh/,target=/home/vscode/.ssh/,readonly"
+		"type=bind,source=${localEnv:HOME}/.ssh/,target=/home/vscode/.ssh/,readonly",
+		"type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"
 	],
 	"privileged": true,
 	"remoteUser": "vscode"
