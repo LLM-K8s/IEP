@@ -48,6 +48,7 @@ WORKDIR /app
 
 # 複製構建階段的依賴
 COPY --from=backend-builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=backend-builder /usr/local/bin /usr/local/bin
 COPY --from=frontend-builder /app/dist /app/dist
 
 # 複製應用程式代碼
@@ -59,7 +60,7 @@ ENV PYTHONUNBUFFERED=1
 ENV FRONTEND_DIST_DIR=/app/dist
 
 # 暴露端口
-EXPOSE 8000
+EXPOSE 8080
 
 # 啟動應用
-CMD ["python", "main.py"]
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-w", "4", "-b", "0.0.0.0:8080", "main:app"]
