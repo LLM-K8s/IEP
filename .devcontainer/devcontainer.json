@@ -11,23 +11,8 @@
 		"ghcr.io/devcontainers-extra/features/mongosh-homebrew:1": {}
 	},
 	"mounts": [
-		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+		"type=bind,source=${localEnv:HOME}/.ssh/,target=/home/vscode/.ssh/,readonly"
 	],
 	"privileged": true,
 	"remoteUser": "vscode"
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
 }
